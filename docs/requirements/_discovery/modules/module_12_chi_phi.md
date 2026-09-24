@@ -1,34 +1,41 @@
-# 12 — Chi phí
+# Khám phá module — Chi phí (`EXP`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
 
-## Expenses — `EXP`
+## `EXP` — Expenses
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Expenses` | UI thực tế |
-| Route | Danh sách `/admin/expenses` · Tạo mới `/admin/expenses/expense` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách | DOM |
-| Nút thanh công cụ | `Record Expense` · `Import Expenses` · icon · `View Quick Stats` · `Toggle Table` · `Export` · `Bulk Actions` · `Reload` | DOM |
-| Cột bảng danh sách | `-` (checkbox) · `Category` · `Amount` · `Name` · `Receipt` · `Date` · `Project` · `Customer` · `Invoice` · `Reference #` · `Payment Mode` | DOM |
-| CRUD | Tạo (`Record Expense`) · Import · Bulk Actions · Export | DOM |
-| Status flow | Không có cột trạng thái | DOM |
-| Ước lượng độ lớn | 10 cột · đính kèm biên lai (`Receipt`) · Import · liên kết Invoice | — |
-| Risk | 🟡 — số tiền chảy vào `Reports ▸ Expenses` và `Expenses vs Income` | — |
-
-### Network
-
-| Request | Ghi chú |
+| Mục | Giá trị |
 |---|---|
-| `POST /admin/expenses/table` · `200` | Tải bảng danh sách |
-| `POST /admin/expenses/get_expenses_total` · `200` | Tổng chi phí cho khối Quick Stats |
+| Tên trên UI | Expenses |
+| Bí danh | Chi phí |
+| Route | Danh sách `/admin/expenses` · tạo `/admin/expenses/expense` |
+| Loại màn hình | Danh sách + Import |
+| Nút thanh công cụ | Record Expense · Import Expenses · Export · Bulk Actions |
+| Cột bảng (11) | checkbox · Category · Amount · Name · Receipt · Date · Project · Customer · Invoice · Reference # · Payment Mode |
+| CRUD | Tạo ✅ (Record Expense) · Import ✅ · Bulk Actions ✅ · Sửa/Xoá ❔ |
+| Status flow | ❔ Không có cột Status; cột `Invoice` gợi ý chi phí có thể được lập hoá đơn cho khách |
+| Dữ liệu hiện tại | ⚠️ `No entries found` — bảng rỗng (ảnh 2026-09-18) |
+| Ước REQ | 25–40 |
+| Risk | 🟡 — tiền; đính kèm biên lai (upload file); liên kết Project/Customer/Invoice |
+
+### Tầng network
+
+Chưa ghi nhận (request bảng rơi khỏi bộ đệm).
 
 ### Vùng chưa xác minh
 
-- Cột `Invoice` — chi phí được tính lại cho khách qua hoá đơn? ❔
-- Danh mục `Category` (cấu hình thuộc `SETUP`, bị cấm)
-- Upload biên lai, chi phí định kỳ
+- Expense Category cấu hình ở đâu (❔ Setup).
+- Luồng chuyển chi phí thành Invoice; chi phí định kỳ.
+- Định dạng file Import.
 
-### Evidence
+### Evidence (2026-09-15, số liệu DOM)
 
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+- 4 nút · 11 cột.
+
+### Danh mục Evidence (2026-09-18)
+
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
+
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [expenses_list_viewport.png](../evidence/expenses_list_viewport.png) | Expenses — danh sách | **Rỗng** — No entries found | Nút Record Expense · Import Expenses · Bulk Actions · 11 cột gồm Receipt, Invoice, Payment Mode |

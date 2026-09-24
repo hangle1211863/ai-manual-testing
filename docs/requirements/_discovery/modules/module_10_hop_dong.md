@@ -1,35 +1,41 @@
-# 10 — Hợp đồng
+# Khám phá module — Hợp đồng (`CONTR`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
+> ⚠️ `CONTR` = **Contracts**. Không nhầm với `CTC` = Contacts (user chốt 2026-09-15).
 
-## Contracts — `CTR`
+## `CONTR` — Contracts
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Contracts` | UI thực tế |
-| Route | Danh sách `/admin/contracts` · Tạo mới `/admin/contracts/contract` · Chi tiết `/admin/contracts/contract/{id}` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách + khối tổng hợp + 2 biểu đồ | UI thực tế |
-| Nút thanh công cụ | `New Contract` · icon · `Export` · `Reload` · nút lọc | DOM |
-| Khối tổng hợp | `Active` · `Expired` · `About to Expire` · `Recently Added` · `Trash` | UI thực tế |
-| Biểu đồ | `Contracts by Type` · `Contracts Value by Type` (USD) | UI thực tế |
-| Cột bảng danh sách | `#` · `Subject` · `Customer` · `Contract Type` · `Contract Value` · `Start Date` · `End Date` · `Project` · `Signature` | DOM |
-| CRUD | Tạo · Xem · Export · có **Trash** (xoá mềm) | DOM · UI thực tế |
-| Status flow | Theo thời gian: `Active` / `About to Expire` / `Expired` · cộng `Trash` · cộng trạng thái chữ ký (`Signature`) | UI thực tế |
-| Tương tác phía khách hàng | Thông báo "New comment from customer on contract…" ở header → khách hàng bình luận được trên hợp đồng | UI thực tế |
-| Ước lượng độ lớn | 9 cột · trạng thái theo ngày · chữ ký · bình luận · loại hợp đồng | — |
-| Risk | 🟡 — có giá trị tiền và chữ ký, nhưng không làm đổi số liệu tài chính khác | — |
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Contracts |
+| Bí danh | Hợp đồng |
+| Route | Danh sách `/admin/contracts` · tạo `/admin/contracts/contract` · chi tiết/sửa `/admin/contracts/contract/{id}` |
+| Loại màn hình | Danh sách + khối "Contract Summary" |
+| Nút thanh công cụ | New Contract · Export |
+| Cột bảng (9) | # · Subject · Customer · Contract Type · Contract Value · Start Date · End Date · Project · Signature |
+| CRUD | Tạo ✅ · Xem/Sửa ✅ (link từ thông báo trên header) · Xoá ❔ |
+| Status flow | ❔ Không có cột Status; có trạng thái ký (`Signature`) và hết hạn (widget Dashboard "Contracts Expiring Soon") |
+| Ước REQ | 30–45 |
+| Risk | 🟡 — có giá trị hợp đồng và chữ ký; khách hàng bình luận qua client portal (thông báo "New comment from customer on contract…") |
 
-### Network
+### Tầng network
 
-Chưa ghi nhận — trang được mở trước khi bật theo dõi network.
+Chưa ghi nhận (request bảng rơi khỏi bộ đệm).
 
 ### Vùng chưa xác minh
 
-- Ngưỡng "About to Expire" (bao nhiêu ngày) — cấu hình thuộc `SETUP`, bị cấm
-- Luồng ký hợp đồng, bình luận của khách
-- Khôi phục từ `Trash`
-- Danh mục `Contract Type`
+- Luồng ký hợp đồng (phía khách — client portal, ngoài phạm vi) và hiển thị phía Admin.
+- Contract Type cấu hình ở đâu (❔ Setup).
+- Gia hạn hợp đồng, bình luận.
 
-### Evidence
+### Evidence (2026-09-15, số liệu DOM)
 
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+- 2 nút · 9 cột · header có link thông báo tới `/admin/contracts/contract/{id}`.
+
+### Danh mục Evidence (2026-09-18)
+
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
+
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [contracts_list_viewport.png](../evidence/contracts_list_viewport.png) | Contracts — danh sách | Mặc định | Khối Contract Summary: Active · Expired · About to Expire · Recently Added · **Trash** · 2 biểu đồ Contracts by Type và Contracts Value by Type (USD) |

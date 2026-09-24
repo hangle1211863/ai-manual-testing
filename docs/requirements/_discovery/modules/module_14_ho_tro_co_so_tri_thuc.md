@@ -1,63 +1,63 @@
-# 14 — Hỗ trợ · Cơ sở tri thức
+# Khám phá module — Hỗ trợ · Cơ sở tri thức (`TKT` · `KB`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
->
-> **Lý do gộp file:** cùng phân hệ hỗ trợ khách hàng (bài viết tri thức phục vụ giảm ticket), không có module 🔴. Gộp file **không** gộp prefix.
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
+> Gộp file vì cùng mảng chăm sóc khách hàng sau bán. **Vẫn là 2 prefix, 2 tài liệu requirements riêng.**
 
-## Support — `TKT`
+## `TKT` — Support
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Support` (tiêu đề trang `Support Tickets`) | UI thực tế |
-| Route | Danh sách `/admin/tickets` · Tạo mới `/admin/tickets/add` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách + khối `Tickets Summary` | DOM |
-| Nút thanh công cụ | `New Ticket` · icon · `Export` · `Bulk Actions` · `Reload` | DOM |
-| Cột bảng danh sách | `-` · `#` · `Subject` · `Tags` · `Department` · `Service` · `Contact` · `Status` · `Priority` · `Last Reply` · `Created` | DOM |
-| CRUD | Tạo · Bulk Actions · Export | DOM |
-| Status flow | Có cột `Status` + `Priority` — danh sách ❔ | DOM |
-| Ước lượng độ lớn | 10 cột · trạng thái · độ ưu tiên · phòng ban · trả lời ticket | — |
-| Risk | 🟡 — giao tiếp trực tiếp với khách hàng qua Contact | — |
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Support (sidebar) · `document.title` = `Support Tickets` |
+| Bí danh | Tickets · Hỗ trợ |
+| Route | Danh sách `/admin/tickets` · tạo `/admin/tickets/add` |
+| Loại màn hình | Danh sách |
+| Nút thanh công cụ | New Ticket · Export · Bulk Actions |
+| Cột bảng (11) | checkbox · # · Subject · Tags · Department · Service · Contact · Status · Priority · Last Reply · Created |
+| CRUD | Tạo ✅ · Bulk Actions ✅ · Xem/Sửa/Xoá ❔ |
+| Status flow | Có — **5 trạng thái** đọc từ khối "Tickets Summary": `Open` · `In Progress` · `Answered` · `On Hold` · `Closed`. Giá trị `Priority` ❔ chưa đọc được |
+| Dữ liệu hiện tại | ⚠️ `Showing 0 to 0 of 0 entries` — bảng rỗng |
+| Ước REQ | 30–45 |
+| Risk | 🟡 — trao đổi với khách (Contact), phụ thuộc Department/Service cấu hình ở Setup |
 
-### Network
+## `KB` — Knowledge Base
+
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Knowledge Base |
+| Bí danh | Cơ sở tri thức · Article |
+| Route | Danh sách `/admin/knowledge_base` · tạo `/admin/knowledge_base/article` |
+| Loại màn hình | Danh sách + Groups |
+| Nút thanh công cụ | New Article · Groups · Export |
+| Cột bảng (3) | Article Name · Group · Date Published |
+| CRUD | Tạo ✅ · Groups ✅ · Xem/Sửa/Xoá ❔ |
+| Status flow | ❔ Không có cột Status |
+| Dữ liệu hiện tại | ⚠️ `No entries found` — bảng rỗng (ảnh 2026-09-18) |
+| Ước REQ | 15–20 |
+| Risk | 🟢 — nội dung tĩnh, ít phụ thuộc |
+
+### Tầng network
 
 | Request | Ghi chú |
 |---|---|
-| `GET /admin/tickets` · `200` | Tải trang |
-| `POST /admin/tickets?bulk_actions=true` · `200` | ⚠️ Phát sinh **ngay khi tải trang**, không có thao tác người dùng — cần xác minh là request tải bảng hay có tác dụng phụ |
+| `POST /admin/tickets?bulk_actions=true` · `200` | Phát sinh ngay khi **tải** trang Support — cần xác nhận chỉ để tải bảng, không có tác dụng phụ |
 
 ### Vùng chưa xác minh
 
-- Danh mục `Department`, `Service`, `Status`, `Priority` (cấu hình thuộc `SETUP`, bị cấm)
-- Luồng trả lời, gộp ticket, chuyển trạng thái
-- Request `bulk_actions=true` khi tải trang
+- **Vì sao Support 0 bản ghi** trong khi Dashboard có widget "Staff Tickets Report" (Q3 ở index).
+- Department, Service, Priority, Status cấu hình ở Setup (bị chặn).
+- Trả lời ticket, đính kèm, gộp ticket.
+- KB: trang công khai cho khách (client portal — ngoài phạm vi).
 
----
+### Evidence (2026-09-15, số liệu DOM)
 
-## Knowledge Base — `KBASE`
+- Support: 3 nút · 11 cột · `.dataTables_info` = `Showing 0 to 0 of 0 entries`.
+- Knowledge Base: 3 nút · 3 cột.
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Knowledge Base` | UI thực tế |
-| Route | Danh sách `/admin/knowledge_base` · Tạo mới `/admin/knowledge_base/article` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách bài viết + nhóm | DOM |
-| Nút thanh công cụ | `New Article` · `Groups` · icon · `Export` · `Reload` | DOM |
-| Cột bảng danh sách | `Article Name` · `Group` · `Date Published` | DOM |
-| CRUD | Tạo bài viết · quản lý Groups · Export | DOM |
-| Status flow | Không quan sát được | — |
-| Ước lượng độ lớn | 3 cột · form bài viết (editor) · nhóm | — |
-| Risk | 🟢 — nội dung tĩnh | — |
+### Danh mục Evidence (2026-09-18)
 
-### Network
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
 
-| Request | Ghi chú |
-|---|---|
-| `POST /admin/knowledge_base` · `200` | Tải bảng danh sách |
-
-### Vùng chưa xác minh
-
-- Hiển thị bài viết phía khách hàng (client portal — ngoài phạm vi)
-- Báo cáo `KB Articles` thuộc `RPT`
-
-### Evidence
-
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [support_tickets_list_empty_viewport.png](../evidence/support_tickets_list_empty_viewport.png) | Support — danh sách | **Rỗng** — No entries found | Khối Tickets Summary nêu đủ **5 trạng thái** · 11 cột gồm Department và Service |
+| [knowledge_base_list_viewport.png](../evidence/knowledge_base_list_viewport.png) | Knowledge Base — danh sách | **Rỗng** — No entries found | Nút New Article · Groups · nút chế độ xem · 3 cột |

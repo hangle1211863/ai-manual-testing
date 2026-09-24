@@ -30,6 +30,15 @@ Sử dụng skill này khi:
 
 > Nếu thiếu 1 trong 3 nguồn → vẫn sinh RTM 2 chiều với nguồn có sẵn, ghi chú rõ phần thiếu. Nếu TC/test không có ID chuẩn → đề xuất bổ sung ID trước, hoặc map tạm theo tên/mô tả (đánh dấu ⚠️ map suy luận).
 
+**Nguồn trong `docs/` — đọc theo `## Bản đồ tài liệu`, không dừng ở index:**
+
+| Nguồn | Đọc thế nào |
+|---|---|
+| Requirements | `docs/requirements/<module>/REQUIREMENTS_<TÊN_MODULE>_SUMMARY.md` (REQ dùng chung) → theo `## Bản đồ tài liệu` đọc **mọi** file `<nền-tảng>/requirements_<module>_<nền-tảng>.md` và `stories/` |
+| Test cases | `docs/testcases/<module>/TEST_CASES_<TÊN_MODULE>_SUMMARY.md` → theo `## Bản đồ tài liệu` đọc **mọi** file `<nền-tảng>/test_cases_<module>_<nền-tảng>.md` và `parts/` |
+
+⚠️ Index test cases **không chứa dòng TC** — chỉ đọc index là báo độ phủ 0% sai. Tài liệu cũ chưa có tầng nền tảng (không có bản đồ) thì đọc như tài liệu một file.
+
 ---
 
 ## Mapping Rules
@@ -46,6 +55,7 @@ Sử dụng skill này khi:
 2. **Map bằng nội dung khi thiếu ID** — so khớp mô tả TC với tên test method; kết quả đánh dấu ⚠️ cần người xác nhận
 3. **1 requirement có thể map nhiều TC** và ngược lại — RTM là quan hệ n-n
 4. **KHÔNG bịa mapping** — không chắc thì để trống và liệt kê vào mục "cần xác nhận"
+5. **TC mang tag `@Deprecated`** (chức năng đã gỡ — tiền tố `🗑️ Deprecated (…) —` ở `Test Scenario`) **không** được tính là đang phủ REQ và **không** vào mẫu số Automation Coverage. Liệt kê riêng: script automation còn trỏ vào TC `@Deprecated` là **script cần gỡ / skip**, không phải orphan
 
 ---
 
@@ -54,6 +64,7 @@ Sử dụng skill này khi:
 | Metric | Công thức | Ý nghĩa |
 |---|---|---|
 | **Requirement Coverage** | # REQ có ≥1 TC / tổng REQ | Requirement nào chưa được test |
+| **Platform Coverage** | # cặp (REQ × nền tảng REQ khai) có ≥1 TC trên đúng nền tảng đó / tổng số cặp | REQ khai `Web · Android` mà chỉ có TC web → nền tảng Android **chưa phủ**, không được tính là đã phủ nhờ TC web |
 | **Automation Coverage** | # TC có ≥1 script / tổng TC | TC nào còn chạy tay |
 | **Orphan Tests** | # test không map về REQ nào | Test thừa hoặc requirement chưa được ghi nhận |
 

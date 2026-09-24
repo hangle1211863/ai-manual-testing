@@ -1,33 +1,40 @@
-# 11 — Thuê bao
+# Khám phá module — Thuê bao (`SUB`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
 
-## Subscriptions — `SUB`
+## `SUB` — Subscriptions
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Subscriptions` | UI thực tế |
-| Route | Danh sách `/admin/subscriptions` · Tạo mới `/admin/subscriptions/create` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách + khối `Subscriptions Summary` | DOM |
-| Nút thanh công cụ | `New Subscription` · icon · `Export` · `Reload` | DOM |
-| Cột bảng danh sách | `#` · `Subscription Name` · `Customer` · `Project` · `Status` · `Next Billing Cycle` · `Date Subscribed` · `Last Sent` | DOM |
-| CRUD | Tạo · Xem · Export | DOM |
-| Status flow | Có cột `Status` — danh sách trạng thái ❔ | DOM |
-| Ước lượng độ lớn | 8 cột · chu kỳ thanh toán · gửi cho khách | — |
-| Risk | 🟡 — thu tiền định kỳ, nhưng phụ thuộc cổng thanh toán bên ngoài (❔) | — |
-
-### Network
-
-| Request | Ghi chú |
+| Mục | Giá trị |
 |---|---|
-| `POST /admin/subscriptions/table` · `200` | Tải bảng danh sách |
+| Tên trên UI | Subscriptions |
+| Bí danh | Thuê bao · gói định kỳ |
+| Route | Danh sách `/admin/subscriptions` · tạo `/admin/subscriptions/create` |
+| Loại màn hình | Danh sách |
+| Nút thanh công cụ | New Subscription · Export |
+| Cột bảng (8) | # · Subscription Name · Customer · Project · Status · Next Billing Cycle · Date Subscribed · Last Sent |
+| CRUD | Tạo ✅ · Xem/Sửa/Xoá ❔ |
+| Status flow | Có — **8 trạng thái** đọc từ khối "Subscriptions Summary": `Not Subscribed` · `Active` · `Future` · `Past Due` · `Unpaid` · `Incomplete` · `Canceled` · `Incomplete Expired` |
+| Dữ liệu hiện tại | ⚠️ `No entries found` — bảng rỗng (ảnh 2026-09-18) |
+| Ước REQ | 20–30 |
+| Risk | 🟡 — thu tiền định kỳ; ❔ phụ thuộc cổng thanh toán cấu hình ở Setup |
+
+### Tầng network
+
+Chưa ghi nhận (request bảng rơi khỏi bộ đệm).
 
 ### Vùng chưa xác minh
 
-- Danh sách trạng thái, khối Summary gồm những gì
-- Tích hợp cổng thanh toán (nghi Stripe) — cấu hình thuộc `SETUP`, bị cấm
-- Subscription có sinh Invoice tự động không — ❔
+- Form tạo — có yêu cầu cổng thanh toán (Stripe…) không; nếu chưa cấu hình thì tạo được không.
+- Subscription sinh Invoice theo chu kỳ (❔).
 
-### Evidence
+### Evidence (2026-09-15, số liệu DOM)
 
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+- 2 nút · 8 cột.
+
+### Danh mục Evidence (2026-09-18)
+
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
+
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [subscriptions_list_viewport.png](../evidence/subscriptions_list_viewport.png) | Subscriptions — danh sách | **Rỗng** — No entries found | Khối Subscriptions Summary mang **logo Stripe** và nêu đủ **8 trạng thái** · 8 cột |

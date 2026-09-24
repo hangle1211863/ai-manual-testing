@@ -1,39 +1,48 @@
-# 02 — Khách hàng
+# Khám phá module: Khách hàng (`CUST`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
+> Tầng khám phá — **KHÔNG chứa mã REQ**. Về index: [system_map.md](../system_map.md)
 
-## Customers — `CUST`
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Customers |
+| Bí danh | Khách hàng, Client |
+| Prefix | `CUST` |
+| Route | `/admin/clients` · chi tiết `/admin/clients/client/{id}` |
+| Loại màn hình | Danh sách + màn hình chi tiết **19 tab** |
+| CRUD | ✅ Tạo (**New Customer**) · Sửa · Xoá · **Import Customers** · **Export** · **Bulk Actions** (gán nhóm) |
+| Status flow | Cột **Active** (Active / Inactive) |
+| Số tab chi tiết | **19** |
+| Ước độ lớn | Form nhiều nhóm field + 19 tab · ~45–65 REQ |
+| Risk | 🔴 Cao — entity trung tâm, 10+ module khác tham chiếu tới; chứa dữ liệu khách hàng thật |
 
-| Mục | Ghi nhận | Nguồn |
+## Màn hình danh sách
+
+- Cột: `#` · Company · Primary Contact · Primary Email · Phone · Active · Groups · Date Created
+- Thanh công cụ: **New Customer** · **Import Customers** · **Contacts** (dẫn sang module `CONT`) · **Export** · **Bulk Actions** · bộ lọc điều kiện (**Add Rule** / **Apply**)
+- Có dropdown chọn số dòng/trang (10 / 25 / 50 / 100 / All)
+
+## Màn hình chi tiết — 19 tab
+
+`Profile` · `Contacts` · `Notes` · `Statement` · `Invoices` · `Payments` · `Proposals` · `Credit Notes` · `Estimates` · `Subscriptions` · `Expenses` · `Contracts` · `Projects` · `Tasks` · `Tickets` · `Files` · `Vault` · `Reminders` · `Map`
+
+Điều hướng bằng query string: `/admin/clients/client/{id}?group=<tên_tab>`.
+
+> Các tab này **không tách module** — chúng là **view chiếu** dữ liệu của module khác lọc theo khách hàng. Riêng `Contacts` tách thành `CONT` vì liên hệ có tài khoản đăng nhập cổng khách hàng riêng.
+
+## Phát hiện tầng network
+
+- Bảng danh sách nạp qua `POST /admin/clients/table` (DataTables server-side). **Không có REST API** `/api/`.
+- Trang chi tiết có select `tax[15]` (15 option thuế) và select nhóm khách hàng — nguồn dữ liệu từ bảng master của khu Setup (đang 403).
+
+## Vùng chưa xác minh
+
+- Field spec của form tạo/sửa khách hàng (chưa mở form vì môi trường dùng chung — mở xem được, chưa làm ở tầng khám phá).
+- Nội dung tab `Vault`, `Statement`, `Map`.
+- Luồng Import Customers (cần upload file → không thực hiện trên môi trường dùng chung).
+
+## Evidence
+
+| Tệp | Màn hình | Trạng thái |
 |---|---|---|
-| Tên trên UI | `Customers` | UI thực tế |
-| Route | Danh sách `/admin/clients` · Tạo mới `/admin/clients/client` · Chi tiết `/admin/clients/client/{id}` | UI thực tế |
-| Loại màn hình | Danh sách + khối tổng hợp + chi tiết nhiều tab | UI thực tế |
-| Nút thanh công cụ | `New Customer` · `Import Customers` · `Contacts` · `Export` · `Bulk Actions` · nút lọc (icon) | UI thực tế |
-| Khối tổng hợp | `Total Customers` · `Active Customers` · `Inactive Customers` · `Active Contacts` · `Inactive Contacts` · `Contacts Logged In Today` | UI thực tế |
-| Cột bảng danh sách | `#` · `Company` · `Primary Contact` · `Primary Email` · `Phone` · `Active` (công tắc bật/tắt) · `Groups` · `Date Created` | UI thực tế |
-| CRUD | Tạo (`New Customer`) · Xem · Import · Export · Bulk Actions. Sửa/xoá: chưa quan sát | UI thực tế |
-| Status flow | Không có status flow — chỉ cờ `Active` bật/tắt | UI thực tế |
-| Tab chi tiết (19) | `Profile` · `Contacts` · `Notes` · `Statement` · `Invoices` · `Payments` · `Proposals` · `Credit Notes` · `Estimates` · `Subscriptions` · `Expenses` · `Contracts` · `Projects` · `Tasks` · `Tickets` · `Files` · `Vault` · `Reminders` · `Map` | UI thực tế · DOM |
-| Tab con của `Profile` (3) | `Customer Details` · `Billing & Shipping` · `Customer Admins` | UI thực tế · DOM |
-| Ước lượng độ lớn | 8 cột · 19 tab (phần lớn là danh sách lọc theo khách của module khác) · 3 tab form Profile · Import | — |
-| Risk | 🔴 — dữ liệu khách hàng · entity nền của ≥ 11 module · Import hàng loạt | — |
-
-> **Ranh giới:** các tab `Invoices`, `Projects`, `Tickets`… là **góc nhìn** lọc theo khách hàng của module tương ứng, không phải entity riêng của `CUST`. Tab thuộc riêng `CUST`: `Profile`, `Notes`, `Statement`, `Files`, `Vault`, `Reminders`, `Map`. `Contacts` tách thành module `CTC`.
-
-### Network
-
-Chưa ghi nhận — trang được mở trước khi bật theo dõi network.
-
-### Vùng chưa xác minh
-
-- Form tạo/sửa chưa mở đầy đủ — mới thấy các nhãn đầu của `Customer Details` (`Company` bắt buộc, `VAT Number`, `Phone`, `Website`, `Groups`)
-- `Groups` là danh mục cấu hình — trang `/admin/clients/groups` bị cấm (thuộc `SETUP`)
-- `Vault` (nghi lưu thông tin nhạy cảm), `Statement`, `Map` chưa mở
-- Luồng Import (định dạng file, validation) chưa mở
-- Hành vi công tắc `Active` — **không** thử vì môi trường dùng chung
-- `Customer Admins` — phân công nhân viên phụ trách, cần danh sách staff (bị cấm ở `SETUP`)
-
-### Evidence
-
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+| [customers_list_fullpage.png](../evidence/customers_list_fullpage.png) | Danh sách khách hàng | Mặc định, có dữ liệu |
+| [customer_detail_tabs_fullpage.png](../evidence/customer_detail_tabs_fullpage.png) | Chi tiết khách hàng (id 317) | Tab Profile, thấy đủ 19 tab |

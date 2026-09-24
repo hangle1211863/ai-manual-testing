@@ -1,34 +1,45 @@
-# 07 — Hoá đơn
+# Khám phá module — Hoá đơn (`INV`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
 
-## Invoices — `INV`
+## `INV` — Invoices
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Invoices` | UI thực tế |
-| Route | Danh sách `/admin/invoices` · `/admin/invoices/list_invoices?status=<n>` · `?filter=not_sent` · Tạo mới `/admin/invoices/invoice` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách + tài liệu bán hàng | UI thực tế |
-| Nút thanh công cụ | `Create New Invoice` · `Batch Payments` · `Recurring Invoices` · `Toggle Table` · `View Quick Stats` · `Filter by status` · `Export` · `Reload` | DOM |
-| Cột bảng danh sách | `Invoice #` · `Amount` · `Total Tax` · `Year` · `Date` · `Customer` · `Project` · `Tags` · `Due Date` · `Status` | DOM |
-| CRUD | Tạo · Xem · Export · ghi nhận thanh toán hàng loạt (`Batch Payments`) | DOM |
-| Status flow | ✅ 5 trạng thái (widget "Invoice overview"): `Draft` · `Unpaid` · `Partially Paid` · `Overdue` · `Paid` · cộng bộ lọc `Not Sent` (`filter=not_sent`) | UI thực tế · `a[href]` |
-| Định dạng số hoá đơn | Quan sát cả `INV-<6 số>` và một tiền tố khác (`ABC-<6 số>`) trong cùng danh sách | UI thực tế |
-| Ước lượng độ lớn | 10 cột · 5 trạng thái · hoá đơn định kỳ · thanh toán hàng loạt · thuế | — |
-| Risk | 🔴 — tiền · status flow phụ thuộc Payment và thời gian (`Overdue`) · Payment, Expense tham chiếu | — |
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Invoices (menu Sales ▸ Invoices) |
+| Bí danh | Hoá đơn |
+| Route | Danh sách `/admin/invoices` · tạo `/admin/invoices/invoice` · sửa `/admin/invoices/invoice/{id}` · xem `/admin/invoices/list_invoices/{id}` · lọc `list_invoices?status={1,2,3,4,6}` · `list_invoices?filter=not_sent` |
+| Loại màn hình | Danh sách + khung xem chứng từ (split view) · form tạo dài |
+| Nút thanh công cụ | Create New Invoice · Batch Payments · Recurring Invoices · Filter by status · Export |
+| Cột bảng (9) | Invoice # · Amount · Total Tax · Date · Customer · Project · Tags · Due Date · Status |
+| CRUD | Tạo ✅ · Xem ✅ · Sửa ✅ (link) · Xoá ❔ |
+| Status flow | Có — **6 trạng thái** đọc từ widget "Invoice overview" trên Dashboard: `Draft` · `Not Sent` · `Unpaid` · `Partially Paid` · `Overdue` · `Paid`. Ngoài ra trang Sales Reports ghi *"Cancelled invoices are excluded from the report"* → còn trạng thái **Cancelled**. Ánh xạ sang mã `status=1,2,3,4,6` ❔ chưa xác minh |
+| Form tạo mới | **63 control** · bắt buộc: `* Customer` · `* Invoice Number` · `* Invoice Date` · `* Currency` |
+| Khung xem chi tiết | Nút: Export · More · Payment · Tab (6): Invoice · Payments · Tasks · Activity Log · Reminders · Notes |
+| Ước REQ | 50–75 |
+| Risk | 🔴 — tiền, thuế, tiền tệ; hoá đơn định kỳ; thanh toán hàng loạt; Payment và Expense phụ thuộc |
 
-### Network
+### Tầng network
 
-Chưa ghi nhận — trang được mở trước khi bật theo dõi network.
+| Request | Ghi chú |
+|---|---|
+| `POST /admin/invoices/table` · `200` | Tải bảng Invoices |
 
 ### Vùng chưa xác minh
 
-- Hai tiền tố số hoá đơn cùng tồn tại — do đổi cấu hình tiền tố theo thời gian hay cho phép sửa số (cấu hình thuộc `SETUP`, bị cấm)
-- Luồng `Batch Payments`, `Recurring Invoices` chưa mở
-- Quy tắc chuyển `Unpaid` → `Partially Paid` → `Paid` theo Payment, `Overdue` theo `Due Date`
-- Áp Credit Note vào hoá đơn
-- ⚠️ Môi trường dùng chung: tạo hoá đơn/thanh toán thử sẽ làm lệch số liệu Dashboard & Reports của người khác
+- Ánh xạ mã trạng thái ↔ tên; trạng thái 5 không có link trên Dashboard (❔ bị ẩn hay không tồn tại).
+- Batch Payments · Recurring Invoices · menu More (gửi mail, nhân bản, xoá…).
+- Cách chọn Item vào dòng hoá đơn; tính thuế, giảm giá, điều chỉnh.
+- Link công khai `/invoice/{id}/<32 ký tự hex>` — thuộc client portal, ngoài phạm vi.
 
-### Evidence
+### Evidence (2026-09-15, số liệu DOM)
 
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+- 5 nút · 9 cột · form 63 control, 4 nhãn bắt buộc · chi tiết 3 nút + 6 tab.
+
+### Danh mục Evidence (2026-09-18)
+
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
+
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [invoices_list_viewport.png](../evidence/invoices_list_viewport.png) | Invoices — danh sách | Mặc định, 6 bản ghi | Nút Create New Invoice · Batch Payments · Recurring Invoices · Filter by status · 9 cột · nhãn trạng thái Paid và Unpaid |

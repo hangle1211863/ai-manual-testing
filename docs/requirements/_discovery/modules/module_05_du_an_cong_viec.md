@@ -1,73 +1,68 @@
-# 05 — Dự án · Công việc
+# Khám phá module — Dự án · Công việc (`PRJ` · `TASK`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
->
-> **Lý do gộp file:** quan hệ cha–con chặt (Task là tab của Project). Gộp file **không** gộp prefix — vẫn là 2 module, 2 tài liệu requirements riêng.
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
+> Gộp file vì quan hệ cha–con (Project ↔ Task). **Vẫn là 2 prefix, 2 tài liệu requirements riêng.**
 
-## Projects — `PRJ`
+## `PRJ` — Projects
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Projects` | UI thực tế |
-| Route | Danh sách `/admin/projects` · Tạo mới `/admin/projects/project` · Chi tiết `/admin/projects/view/{id}` | UI thực tế |
-| Loại màn hình | Danh sách + khối tổng hợp + chi tiết nhiều tab | UI thực tế |
-| Nút thanh công cụ | `New Project` · nút icon (chưa rõ chức năng) · `Export` · `Reload` · nút lọc | UI thực tế |
-| Khối tổng hợp (= trạng thái) | `Not Started` · `In Progress` · `On Hold` · `Cancelled` · `Finished` | UI thực tế |
-| Cột bảng danh sách | `#` · `Project Name` · `Customer` · `Tags` · `Start Date` · `Deadline` · `Members` · `Status` | UI thực tế |
-| CRUD | Tạo · Xem · Export. Sửa/xoá: chưa quan sát | UI thực tế |
-| Status flow | ✅ 5 trạng thái | UI thực tế |
-| Tab chi tiết (12) | `Overview` · `Tasks` · `Timesheets` · `Milestones` · `Files` · `Discussions` · `Gantt` · `Tickets` · `Contracts` · `Sales` · `Notes` · `Activity` | DOM |
-| Tab con của `Sales` (6, ẩn tới khi mở) | `Proposals` · `Estimates` · `Invoices` · `Subscriptions` · `Expenses` · `Credit Notes` | DOM |
-| Ước lượng độ lớn | 8 cột · 5 trạng thái · 12 tab (≥ 5 tab riêng của Project: Overview, Milestones, Discussions, Gantt, Notes, Activity) | — |
-| Risk | 🔴 — entity nền thứ hai (≥ 10 module tham chiếu) · status flow · nhiều tab | — |
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Projects |
+| Bí danh | Dự án |
+| Route | Danh sách `/admin/projects` · tạo `/admin/projects/project` · sửa `/admin/projects/project/{id}` · chi tiết `/admin/projects/view/{id}` |
+| Loại màn hình | Danh sách + khối "Projects Summary" · form 2 tab · chi tiết nhiều tab |
+| Nút thanh công cụ | New Project · Export |
+| Cột bảng (8) | # · Project Name · Customer · Tags · Start Date · Deadline · Members · Status |
+| CRUD | Tạo ✅ · Xem ✅ · Sửa ✅ link `projects/project/{id}` · Xoá ✅ link GET `/admin/projects/delete/{id}` (chưa mở) |
+| Status flow | Có — **5 trạng thái** đọc từ khối "Projects Summary": `Not Started` · `In Progress` · `On Hold` · `Cancelled` · `Finished` |
+| Form tạo mới | 40 control · 2 tab: `Project` · `Project Settings` · bắt buộc: `* Project Name` · `* Customer` · `* Billing Type` · `* Start Date` |
+| Tab chi tiết (12) | Overview · Tasks · Timesheets · Milestones · Files · Discussions · Gantt · Tickets · Contracts · Sales · Notes · Activity |
+| Tab con của Sales (6) | Proposals · Estimates · Invoices · Subscriptions · Expenses · Credit Notes |
+| Ước REQ | 60–90 |
+| Risk | 🔴 — entity nền của ≥ 12 module; có Billing Type (tính tiền theo giờ/cố định); status flow; xoá qua link GET |
 
-> **Ranh giới:** `Milestones`, `Discussions`, `Gantt`, `Notes`, `Activity`, `Files` thuộc `PRJ` (không tồn tại ngoài dự án). `Tasks`, `Tickets`, `Contracts`, `Sales` là góc nhìn của module khác. `Timesheets` thuộc `TASK`.
->
-> ⚠️ Module có ≥ 5 tab riêng — recon cấp module nhiều khả năng phải **tách tài liệu** theo Story.
+## `TASK` — Tasks
 
-### Network
+| Mục | Giá trị |
+|---|---|
+| Tên trên UI | Tasks |
+| Bí danh | Công việc |
+| Route | Danh sách `/admin/tasks` · chi tiết `/admin/tasks/view/{id}` · danh sách lọc `/admin/tasks/list_tasks` |
+| Loại màn hình | Danh sách + khối "Tasks Summary" · chế độ `Tasks Overview` · trang chi tiết |
+| Nút thanh công cụ | New Task · Tasks Overview · Export · Bulk Actions |
+| Cột bảng (9) | checkbox · # · Name · Status · Start Date · Due Date · Assigned to · Tags · Priority |
+| CRUD | Tạo ✅ (nút; từ header mở modal) · Xem ✅ · Xoá ✅ link GET `/admin/tasks/delete_task/{id}` (chưa mở) · Bulk Actions |
+| Status flow | Có — 5 trạng thái quan sát ở trang chi tiết: `Not Started` · `In Progress` · `Testing` · `Awaiting Feedback` · `Complete` (các nút "Mark as …") |
+| Priority | `Low` · `Medium` · `High` · `Urgent` |
+| Trang chi tiết | Related (liên kết tới Project) · Description · Comments · Task Info (Status · Start Date · Due Date · Priority · Hourly Rate · Billable · Billable Amount · Your logged time) |
+| Ước REQ | 40–60 |
+| Risk | 🟡 — CRUD dùng hằng ngày, có status flow và tính tiền (Billable); timer/timesheet liên quan |
 
-Chưa ghi nhận — trang được mở trước khi bật theo dõi network.
-
-### Vùng chưa xác minh
-
-- Form tạo dự án (billing type, members, visible tabs cho khách…) chưa mở
-- Nội dung từng tab — mới đọc nhãn tab
-- Quy tắc chuyển trạng thái (được chuyển từ đâu sang đâu, ai được chuyển)
-- Chức năng nút icon cạnh `New Project`
-
----
-
-## Tasks — `TASK`
-
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Tasks` | UI thực tế |
-| Route | Danh sách `/admin/tasks` · `/admin/tasks/list_tasks` · Chi tiết `/admin/tasks/view/{id}` | UI thực tế |
-| Loại màn hình | Danh sách + khối tổng hợp + chế độ xem khác (nút icon lưới) + `Tasks Overview` | UI thực tế |
-| Nút thanh công cụ | `New Task` · nút icon lưới (nghi Kanban) · `Tasks Overview` · `Export` · `Bulk Actions` · `Reload` · nút lọc | UI thực tế |
-| Khối tổng hợp (= trạng thái) | `Not Started` · `In Progress` · `Testing` · `Awaiting Feedback` · `Complete` — mỗi ô kèm "Tasks assigned to me" | UI thực tế |
-| Cột bảng danh sách | `#` · `Name` · `Status` (dropdown đổi trực tiếp trên dòng) · `Start Date` · `Due Date` · `Assigned to` · `Tags` · … (bảng cuộn ngang, còn cột bị khuất) | UI thực tế |
-| CRUD | Tạo · Xem · Bulk Actions · Export · **Xoá** (có link `/admin/tasks/delete_task/{id}` trong Dashboard — **không** mở) | UI thực tế · `a[href]` |
-| Status flow | ✅ 5 trạng thái · đổi trạng thái ngay trên dòng bảng | UI thực tế |
-| Nhãn đặc biệt | `Recurring Task` (task lặp lại) | UI thực tế |
-| Thành phần liên quan | Timer ở header (`Stop Timer`) · `My Timesheets` · `Timesheets overview` (Reports) · Reminders | UI thực tế |
-| Ước lượng độ lớn | ≥ 7 cột · 5 trạng thái · task lặp · timer/timesheet · checklist/bình luận (❔) | — |
-| Risk | 🟡 — dùng hằng ngày, status flow 5 bước, gắn với thời gian làm việc | — |
-
-### Network
+### Tầng network
 
 | Request | Ghi chú |
 |---|---|
-| `POST /admin/tasks/table` · `200` | Tải bảng (ghi nhận khi Dashboard tải widget task) |
+| `POST /admin/projects/table` · `200` | Tải bảng Projects |
+| `POST /admin/tasks/table` · `200` | Tải bảng Tasks (từ widget Dashboard) |
+| `POST /admin/tasks/table?bulk_actions=true` · `200` | Phát sinh khi **tải** trang Tasks — cần xác nhận không có tác dụng phụ |
 
 ### Vùng chưa xác minh
 
-- `/admin/tasks/view/{id}` hiển thị lại trang danh sách Tasks — nghi mở chi tiết dạng **modal**, chưa xác minh
-- Cột bị khuất bên phải bảng
-- Chế độ xem Kanban, `Tasks Overview` chưa mở
-- Quy tắc task lặp lại, timer, checklist — chưa quan sát
+- Danh sách trạng thái Project đầy đủ; tuỳ chọn Billing Type.
+- Form New Task (modal) — field, bắt buộc, Related to entity nào ngoài Project.
+- Tasks Overview, Gantt, Milestones, Discussions, Timer bắt đầu/dừng.
+- Timer đang chạy trên tài khoản dùng chung — ảnh hưởng timesheet (ghi nhận từ phiên trước, **chưa xác minh lại**).
 
-### Evidence
+### Evidence (2026-09-15, số liệu DOM)
 
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+- Projects: 2 nút · 8 cột · form 40 control / 2 tab · chi tiết 12 tab + 6 tab con.
+- Tasks: 4 nút · 9 cột · chi tiết đọc được 5 trạng thái + 4 mức Priority.
+
+### Danh mục Evidence (2026-09-18)
+
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
+
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [projects_list_viewport.png](../evidence/projects_list_viewport.png) | Projects — danh sách | Mặc định | Khối Projects Summary nêu đủ **5 trạng thái** · 8 cột · cột Status hiển thị nhãn On Hold / In Progress |
+| [tasks_list_viewport.png](../evidence/tasks_list_viewport.png) | Tasks — danh sách | Mặc định | Khối Tasks Summary nêu đủ **5 trạng thái** · cột Status và Priority là dropdown sửa tại chỗ · nhãn Recurring Task |

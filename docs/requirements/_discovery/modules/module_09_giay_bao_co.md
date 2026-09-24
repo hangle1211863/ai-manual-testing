@@ -1,32 +1,40 @@
-# 09 — Giấy báo có
+# Khám phá module — Giấy báo có (`CRN`)
 
-> ← [Về bản đồ hệ thống](../system_map.md) · Trạng thái recon: xem [danh mục](../../README.md)
+> Thuộc bản đồ [`../system_map.md`](../system_map.md). **Không chứa mã REQ.** Trạng thái recon xem [`../../README.md`](../../README.md).
 
-## Credit Notes — `CRN`
+## `CRN` — Credit Notes
 
-| Mục | Ghi nhận | Nguồn |
-|---|---|---|
-| Tên trên UI | `Credit Notes` | UI thực tế |
-| Route | Danh sách `/admin/credit_notes` · Tạo mới `/admin/credit_notes/credit_note` | UI thực tế · `a[href]` |
-| Loại màn hình | Danh sách + tài liệu bán hàng | DOM |
-| Nút thanh công cụ | `New Credit Note` · icon · `Toggle Table` · `Export` · `Reload` | DOM |
-| Cột bảng danh sách | `Credit Note #` · `Credit Note Date` · `Customer` · `Status` · `Project` · `Reference #` · `Amount` · `Remaining Amount` | DOM |
-| CRUD | Tạo · Xem · Export | DOM |
-| Status flow | Có cột `Status` — danh sách trạng thái ❔ chưa thấy | DOM |
-| Ước lượng độ lớn | 8 cột · số dư còn lại · áp vào hoá đơn | — |
-| Risk | 🔴 — tiền · số dư `Remaining Amount` trừ dần | — |
-
-### Network
-
-| Request | Ghi chú |
+| Mục | Giá trị |
 |---|---|
-| `POST /admin/credit_notes/table` · `200` | Tải bảng danh sách |
+| Tên trên UI | Credit Notes (menu Sales ▸ Credit Notes) |
+| Bí danh | Giấy báo có |
+| Route | Danh sách `/admin/credit_notes` · tạo `/admin/credit_notes/credit_note` |
+| Loại màn hình | Danh sách + chứng từ bán hàng |
+| Nút thanh công cụ | New Credit Note · Export |
+| Cột bảng (8) | Credit Note # · Credit Note Date · Customer · Status · Project · Reference # · Amount · Remaining Amount |
+| CRUD | Tạo ✅ · Xem/Sửa/Xoá ❔ |
+| Status flow | Có — cột `Status`; Bulk PDF Export có nhóm `Open · Closed · Void` (❔ chưa xác nhận thuộc Credit Note) |
+| Dữ liệu hiện tại | ⚠️ `No entries found` — bảng rỗng (ảnh 2026-09-18) |
+| Ước REQ | 25–35 |
+| Risk | 🔴 — tiền; số dư `Remaining Amount` gợi ý được trừ dần vào hoá đơn |
+
+### Tầng network
+
+Chưa ghi nhận (request bảng rơi khỏi bộ đệm).
 
 ### Vùng chưa xác minh
 
-- Danh sách trạng thái (bảng danh sách không có bản ghi mẫu để đọc badge)
-- Cơ chế áp Credit Note vào Invoice và hoàn tiền — ❔
+- Luồng áp Credit Note vào Invoice, hoàn tiền.
+- Tên trạng thái thật.
 
-### Evidence
+### Evidence (2026-09-15, số liệu DOM)
 
-Không có ảnh lưu ra đĩa — xem lý do ở [system_map.md mục 1](../system_map.md#1-bối-cảnh-khảo-sát).
+- 2 nút · 8 cột.
+
+### Danh mục Evidence (2026-09-18)
+
+> Chụp bằng Chrome headless, viewport `1600×750`, hồ sơ Chrome riêng đã đăng nhập. Ảnh **viewport** chứ không full-page: ở tầng khám phá chỉ cần chứng minh module tồn tại và thấy thanh công cụ + hàng tiêu đề bảng; full-page sẽ kéo theo toàn bộ dữ liệu nghiệp vụ không liên quan. Mọi ảnh đã được mở lại xác nhận đúng trạng thái.
+
+| Tệp | Màn hình | Trạng thái | Chứng minh |
+|---|---|---|---|
+| [credit_notes_list_viewport.png](../evidence/credit_notes_list_viewport.png) | Credit Notes — danh sách | **Rỗng** — No entries found | Nút New Credit Note · 8 cột gồm Remaining Amount · xác nhận module chưa có dữ liệu để recon |
