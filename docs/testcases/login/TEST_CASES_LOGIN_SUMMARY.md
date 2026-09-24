@@ -1,4 +1,4 @@
-# Test Cases — Module Đăng nhập / Xác thực (`LOGIN`) — tổng 59 TC · 1 nền tảng · độ hạt GỘP
+# Test Cases — Module Đăng nhập / Xác thực (`LOGIN`) — tổng 51 TC · 1 nền tảng · độ hạt GỘP
 
 | Thông tin | Nội dung |
 |---|---|
@@ -7,8 +7,8 @@
 | **Nguồn requirement** | [REQUIREMENTS_LOGIN_SUMMARY.md](../../requirements/login/REQUIREMENTS_LOGIN_SUMMARY.md) — 44 REQ, **40 trong phạm vi** |
 | **Mode sinh** | QUICK (`/generate-testcases-from-requirements`) · **độ hạt GỘP**<br>Bổ sung 11-09-2026: 9 TC theo **Bản Đồ Loại Kiểm Thử — 4 Vòng** (`/generate-testcases-manual-rbt`) |
 | **Ngày sinh** | 20-08-2026 · cập nhật ngôn ngữ kiểm chứng 20-08-2026 · bổ sung 4 vòng 11-09-2026 · **DELTA `adhoc_2026-09-19` + chuyển tầng nền tảng 19-09-2026** |
-| **Dải TC ID** | `CRM_LOGIN_TC_001` → `CRM_LOGIN_TC_059` — `001`→`041` gốc, `042`→`050` bổ sung 4 vòng, `051` bổ sung theo `AMB-LOGIN-19`, `052`→`059` bổ sung theo review 24-09-2026 |
-| **Mã kế tiếp** | `CRM_LOGIN_TC_060` — **KHÔNG đánh lại từ 001** |
+| **Dải TC ID** | `CRM_LOGIN_TC_001` → `CRM_LOGIN_TC_051` — `001`→`041` gốc, `042`→`050` bổ sung 4 vòng, `051` bổ sung theo `AMB-LOGIN-19` |
+| **Mã kế tiếp** | `CRM_LOGIN_TC_052` — **KHÔNG đánh lại từ 001** |
 | **Môi trường** | ⚠️ **Dùng chung** — mọi TC chỉ đọc hoặc hoàn tác được; không có TC nào phá huỷ dữ liệu nghiệp vụ |
 | **Trình duyệt chuẩn** | Google Chrome, viewport desktop `1600×750` |
 | **Tài khoản** | 🔒 Lấy từ `.env` (`ADMIN_*`, `PM_*`, `CUSTOMER_*`) — **KHÔNG** ghi mật khẩu thật vào tài liệu |
@@ -52,11 +52,9 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 
 | Nền tảng | File | Nhóm chức năng | Số TC | TC ID | REQ bao phủ |
 |---|---|---|---|---|---|
-| Web | [web/test_cases_login_web.md](web/test_cases_login_web.md) | A Giao diện · B Đăng nhập thành công · C Dữ liệu đầu vào · D Phiên & CSRF · E Quên mật khẩu · F Đăng xuất · G Phi chức năng · H Hành vi ô nhập · I Giá trị biên · K Tương thích | 59 | 001–059 | 39/39 REQ trong phạm vi |
+| Web | [web/test_cases_login_web.md](web/test_cases_login_web.md) | A Giao diện · B Đăng nhập thành công · C Dữ liệu đầu vào · D Phiên & CSRF · E Quên mật khẩu · F Đăng xuất · G Phi chức năng · H Hành vi ô nhập · I Giá trị biên · K Tương thích | 51 | 001–051 | 39/39 REQ trong phạm vi |
 | Mobile | — | Chưa có | 0 | — | — |
 | API | — | Chưa có | 0 | — | — |
-
-> ⚠️ **`web/parts/` KHÔNG có hiệu lực.** Thư mục đó chứa 54 TC **đánh số lại** — cùng mã `CRM_LOGIN_TC_0xx` với file trên nhưng khác hành vi (VD `parts` `TC_007` = đăng nhập Admin, ở đây `TC_007` = chuẩn hoá email). User quyết định **giữ nguyên, không dùng** (24-09-2026). Mọi workflow chỉ đọc file trong bảng trên.
 
 ---
 
@@ -73,7 +71,6 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | ASM-07 | ✅ **Đã giải quyết 19-09-2026** — PO chốt bắt buộc ép HTTPS (`AMB-LOGIN-20` → `REQ-LOGIN-44`), trùng giả định · *Ban đầu:* `run_1787215085`: không chuyển hướng, bug `TC039` đang mở. Requirements mục 9 ghi "toàn bộ qua HTTPS" nhưng **không** khẳng định có chuyển hướng ép buộc từ HTTP | Viết TC theo **chuẩn bảo mật** (phải chuyển sang HTTPS + có HSTS), đối chiếu với bug report cũ | `TC_039` — `@KnownBug`, gỡ `@NeedsVerify` |
 | ASM-08 | ✅ **Đã giải quyết** — `run_1787215085` xác nhận **trùng giả định**. Mã CSRF gửi rỗng có bị chặn như mã bị sửa không (chưa có evidence) | Giả định **bị chặn giống nhau** — cùng trang lỗi `419 Page Expired!` | `TC_025-b` — gỡ `@NeedsVerify` |
 | ASM-09 | `REQ-LOGIN-08` (phát hành cookie ghi nhớ) không có hệ quả nghiệp vụ nào kiểm được bằng mắt, vì `REQ-LOGIN-40` ghi nhận tính năng tự đăng nhập lại **không hoạt động** (`AMB-LOGIN-15` ⏭️) | Phần chính của `TC_008`/`TC_009` chỉ chấm tới bước đăng nhập thành công; kiểm chứng cookie đặt ở dòng 🔧 và TC gắn `@TechCheck` | `TC_008`, `TC_009` — `@TechCheck` |
-| ASM-10 | Chưa có REQ quy định chuyện đăng nhập **cùng một tài khoản ở nhiều trình duyệt** — phiên cũ còn dùng được hay bị đá ra? | Giả định **cho phép nhiều phiên đồng thời** — môi trường demo cho nhiều người dùng chung một tài khoản Admin. Chưa đo | `TC_057` — `@AssumptionBased` + `@NeedsVerify`. Kết quả khác giả định → mở `AMB-LOGIN-21` cho PO chốt, **không** chấm FAIL |
 
 > ✅ **Không phát hiện xung đột nào giữa tài liệu và evidence.** Cả 9 ảnh đều xác nhận đúng mô tả trong `REQUIREMENTS_LOGIN_SUMMARY.md`.
 
@@ -84,19 +81,19 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | REQ ID | Mô tả ngắn | Số TC | TC IDs (kèm biến thể) | Đủ Positive/Negative/Boundary? |
 |---|---|---|---|---|
 | REQ-LOGIN-01 | Truy cập trang đăng nhập | 1 | TC_001 | ✅ |
-| REQ-LOGIN-02 | Thành phần biểu mẫu đăng nhập | 9 | TC_002 (6 mục), TC_038, TC_042, TC_043, TC_044, TC_048, TC_049, TC_050, TC_059 | ✅ |
+| REQ-LOGIN-02 | Thành phần biểu mẫu đăng nhập | 8 | TC_002 (6 mục), TC_038, TC_042, TC_043, TC_044, TC_048, TC_049, TC_050 | ✅ |
 | REQ-LOGIN-03 | Tự đặt con trỏ vào ô Email | 1 | TC_002-`2` | ✅ |
 | REQ-LOGIN-04 | Logo dẫn về trang chủ | 1 | TC_004 | ✅ |
 | REQ-LOGIN-05 | Không có CAPTCHA | 1 | TC_003-`1` | ✅ (kiểm sự vắng mặt) |
-| REQ-LOGIN-06 | Đăng nhập bằng thông tin hợp lệ | 6 | TC_005, TC_006, TC_010, TC_041, TC_050, TC_057 | ✅ |
+| REQ-LOGIN-06 | Đăng nhập bằng thông tin hợp lệ | 5 | TC_005, TC_006, TC_010, TC_041, TC_050 | ✅ |
 | REQ-LOGIN-07 | Email không phân biệt hoa thường | 1 | TC_007-`a`,`b` | ✅ |
 | REQ-LOGIN-08 | Ghi nhớ đăng nhập sinh cookie ghi nhớ | 1 | TC_008 | ✅ (cặp với TC_009) |
 | REQ-LOGIN-09 | Không tích thì không phát hành cookie | 1 | TC_009 | ✅ (nhánh phủ định của REQ-08) |
 | REQ-LOGIN-10 | Bỏ trống cả hai trường | 2 | TC_011-`a`,`d`, TC_043-`a` | ✅ |
 | REQ-LOGIN-11 | Bỏ trống riêng Email | 1 | TC_011-`b` | ✅ |
 | REQ-LOGIN-12 | Bỏ trống riêng Mật khẩu | 1 | TC_011-`c` | ✅ |
-| REQ-LOGIN-13 | Chặn email sai định dạng tại trình duyệt | 6 | TC_012-`a`→`e`, TC_045-`a`,`b`, TC_046-`a`→`c`, TC_052-`a`→`d`, TC_053, TC_054-`a`→`c` | ✅ (client: TC_012, TC_052 · máy chủ: TC_045/046/053 · định dạng hợp lệ đặc biệt: TC_054) |
-| REQ-LOGIN-14 | Thông báo khi sai thông tin đăng nhập | 9 | TC_013, TC_014, TC_017, TC_018, TC_040, TC_045, TC_047, TC_050, TC_054 | ✅ |
+| REQ-LOGIN-13 | Chặn email sai định dạng tại trình duyệt | 3 | TC_012-`a`→`e`, TC_045-`a`,`b`, TC_046-`a`→`c` | ✅ (client: TC_012 · máy chủ: TC_045/046) |
+| REQ-LOGIN-14 | Thông báo khi sai thông tin đăng nhập | 8 | TC_013, TC_014, TC_017, TC_018, TC_040, TC_045, TC_047, TC_050 | ✅ |
 | REQ-LOGIN-15 | Thông báo không tiết lộ email nào có thật | 2 | TC_013 (bước 5), TC_019 (bước 4) | ✅ |
 | REQ-LOGIN-16 | 🐞 Ô Email phải giữ lại email sau lỗi | 1 | TC_016 | ✅ (TC sẽ FAIL — đúng thiết kế) |
 | REQ-LOGIN-17 | Chặn URL nội bộ khi chưa đăng nhập | 1 | TC_021-`a`,`b` | ✅ |
@@ -105,7 +102,7 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | REQ-LOGIN-20 | Đã đăng nhập không vào trang Quên mật khẩu | 1 | TC_023-`b`,`d` | ✅ (2 vai trò) |
 | REQ-LOGIN-21 | Biểu mẫu mang mã chống CSRF | 1 | TC_024 (🔧 3 mục) | ✅ |
 | REQ-LOGIN-22 | Từ chối yêu cầu có mã CSRF sai | 1 | TC_025-`a`,`b` | ✅ |
-| REQ-LOGIN-23 | Truy cập trang Quên mật khẩu | 3 | TC_027-`1`,`2`, TC_055-`a`→`c`, TC_056-`a`,`b` | ✅ (định dạng ô Email: trình duyệt TC_055 · máy chủ TC_056) |
+| REQ-LOGIN-23 | Truy cập trang Quên mật khẩu | 1 | TC_027-`1`,`2` | ✅ |
 | REQ-LOGIN-24 | Không có lối quay lại đăng nhập | 1 | TC_027-`3` | ✅ (kiểm sự vắng mặt) |
 | REQ-LOGIN-25 | 🐞 Bỏ trống email phải báo trường bắt buộc | 1 | TC_028 | ✅ (TC sẽ FAIL — đúng thiết kế) |
 | REQ-LOGIN-26 | Email không tồn tại ở Quên mật khẩu | 2 | TC_029, TC_030 | ✅ |
@@ -113,8 +110,8 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | REQ-LOGIN-29 | Mỗi viewport có một lối đăng xuất dùng được | 2 | TC_032, TC_033 | ✅ |
 | REQ-LOGIN-30 | Cảnh báo khi còn bộ đếm giờ đang chạy | 1 | TC_034 | ✅ — chạy thật đầu-cuối 19-09-2026 |
 | REQ-LOGIN-31 | Đăng xuất ngay khi không có bộ đếm giờ | 1 | TC_035 | ✅ (nhánh phủ định của REQ-30) |
-| REQ-LOGIN-32 | Kết thúc phiên và về trang đăng nhập | 2 | TC_036-`a`,`b`, TC_058 | ✅ |
-| REQ-LOGIN-33 | URL nội bộ bị chặn sau khi đăng xuất | 2 | TC_036 bước 4–5, TC_058 (tab khác) | ✅ |
+| REQ-LOGIN-32 | Kết thúc phiên và về trang đăng nhập | 1 | TC_036-`a`,`b` | ✅ |
+| REQ-LOGIN-33 | URL nội bộ bị chặn sau khi đăng xuất | 1 | TC_036 bước 4–5 | ✅ |
 | REQ-LOGIN-36 | Không có đăng nhập mạng xã hội | 1 | TC_003-`2` | ✅ (kiểm sự vắng mặt) |
 | REQ-LOGIN-37 | Trang không nạp tệp JavaScript nào | 1 | TC_003-`3` | ✅ (kiểm sự vắng mặt) |
 | REQ-LOGIN-38 | Email bỏ qua khoảng trắng thừa | 1 | TC_007-`c`,`d` | ✅ |
@@ -156,9 +153,7 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 
 | Vùng / trạng thái | TC · biến thể | Đề xuất recon bổ sung |
 |---|---|---|
-| Hai phiên cùng tài khoản ở hai trình duyệt | `TC_057` | Cần người đăng nhập thật ở 2 trình duyệt — agent không được nhập mật khẩu. Đo xong thì chốt `ASM-10` |
-| Đăng xuất ở tab khác | `TC_058` | Cần đăng nhập thật; tài khoản Admin dùng chung phải **không** có timer đang chạy |
-| Nhấn Enter trong ô Password | `TC_059` | Công cụ của agent gửi được phím Enter nhưng không gửi được biểu mẫu → phải chạy tay một lần |
+| *(không còn vùng nào)* | — | `TC_024` mục 🔧`2` đã đo 19-09-2026 — xem `ASM-05` |
 
 > ✅ **Đã giải quyết** (gỡ `@NeedsVerify` ngày 19-09-2026 theo `/review-testcases`): `TC_011-d`, `TC_025-b`, `TC_031-b`, `TC_033`, `TC_039`, `TC_040`, `TC_041` — bằng chứng ở `run_1787215085` · `TC_014`, `TC_034`, `TC_049-a/c/d`, `TC_050` — bằng chứng ở `run_1789759574`.
 
@@ -178,9 +173,9 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | 1 | Input valid data | ✅ | TC_005, TC_006 (2 TC · 2 vai trò) |
 | 1 | Save | ✅ | TC_005 — "lưu" của module này là **tạo phiên đăng nhập** |
 | 1 | Verify data | ✅ | TC_005, TC_006, TC_008, TC_009 (4 TC — phiên và cookie ghi nhớ giữ đúng) |
-| 2 | **UI Behavior** | ✅ **bổ sung 11-09-2026** | TC_042, TC_043, TC_044, TC_059 (4 TC · 4 biến thể) — *trước đó nhánh này TRỐNG*. `TC_059` (Enter trong ô Password) bổ sung 24-09-2026 |
+| 2 | **UI Behavior** | ✅ **bổ sung 11-09-2026** | TC_042, TC_043, TC_044 (3 TC · 3 biến thể) — *trước đó nhánh này TRỐNG* |
 | 2 | Required | ✅ | TC_011 (1 TC · 4 biến thể) |
-| 2 | Validation | ✅ | TC_007, TC_012, TC_014, TC_017, TC_018, TC_045, TC_046, TC_047, TC_048, TC_052, TC_053, TC_054, TC_055, TC_056 (14 TC · 34 biến thể)<br>• **Email trang Đăng nhập: đủ 8/8 mục áp dụng** — mục *"email đã tồn tại"* không áp dụng: màn đăng nhập không tạo tài khoản. ⚠️ Review 23-09-2026 phát hiện trước đó thực tế chỉ **6/8** — thiếu *domain không hợp lệ* (nay `TC_052`, `TC_053`) và *ký tự đặc biệt trước `@`* (nay `TC_054`)<br>• **Email trang Quên mật khẩu:** thiếu `@` `TC_030` · thiếu domain, nhiều `@` `TC_055` · max length, domain không đuôi `TC_056` · bỏ trống `TC_028`. *Case / khoảng trắng* không kiểm — với email có thật sẽ kích hoạt gửi mail (`REQ-LOGIN-27` ngoài phạm vi)<br>• **Bảng Password: đủ 4/4 mục áp dụng** — 3 mục không áp dụng, có lý do: *nút hiện/ẩn* không tồn tại (TC_042 xác nhận) · *ô xác nhận mật khẩu* không có trên màn này · *rule độ mạnh* (độ dài tối thiểu, ký tự đặc biệt, chữ hoa, chữ số) thuộc màn **Đăng ký / Đổi mật khẩu**, màn Đăng nhập chỉ xác thực chứ không áp rule |
+| 2 | Validation | ✅ | TC_007, TC_012, TC_014, TC_017, TC_018, TC_045, TC_046, TC_047, TC_048 (9 TC · 21 biến thể)<br>• **Bảng Email: đủ 8/8 mục áp dụng** — mục *"email đã tồn tại"* không áp dụng: màn đăng nhập không tạo tài khoản<br>• **Bảng Password: đủ 4/4 mục áp dụng** — 3 mục không áp dụng, có lý do: *nút hiện/ẩn* không tồn tại (TC_042 xác nhận) · *ô xác nhận mật khẩu* không có trên màn này · *rule độ mạnh* (độ dài tối thiểu, ký tự đặc biệt, chữ hoa, chữ số) thuộc màn **Đăng ký / Đổi mật khẩu**, màn Đăng nhập chỉ xác thực chứ không áp rule |
 | 2 | Equivalence Partitioning | ✅ | TC_012, TC_013, TC_045, TC_046 |
 | 2 | **Boundary Value Analysis** | ✅ **bổ sung 11-09-2026** | TC_045, TC_046, TC_047, TC_048 (4 TC · 8 biến thể) — *trước đó nhánh này TRỐNG*, mốc 64 ký tự đo được ngày 11-09-2026 |
 | 2 | Business Rule | ✅ | TC_013, TC_015, TC_019 (3 TC) |
@@ -189,9 +184,9 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | 2 | Dependency | ✅ | TC_034 (bộ đếm giờ đang chạy chặn đăng xuất thẳng — chạy thật 19-09-2026), TC_037 (cookie ghi nhớ sau khi đăng xuất) |
 | 2 | Use Case / Scenario | ✅ | Chuỗi TC_005 → TC_036 (đăng nhập → dùng → đăng xuất) |
 | 2 | Save / Edit / Delete | ➖ | Module xác thực không có bản ghi nghiệp vụ để tạo/sửa/xoá |
-| 2 | Error Guessing | ✅ | TC_010, TC_016, TC_018, TC_036, TC_040, TC_057 (6 TC) — `TC_057` (2 phiên cùng tài khoản) bổ sung 24-09-2026 |
+| 2 | Error Guessing | ✅ | TC_010, TC_016, TC_018, TC_036, TC_040 (5 TC) |
 | 3 | Permission | ✅ | TC_006, TC_019, TC_020, TC_021, TC_022, TC_023 (6 TC · 3 vai trò Admin/PM/Khách hàng × truy cập URL trực tiếp) |
-| 3 | Security | ✅ | TC_017, TC_024, TC_025, TC_026, TC_036, TC_037, TC_039, TC_047, TC_051, TC_057, TC_058 (11 TC) — `TC_051` bổ sung 19-09-2026 · `TC_057`, `TC_058` bổ sung 24-09-2026 |
+| 3 | Security | ✅ | TC_017, TC_024, TC_025, TC_026, TC_036, TC_037, TC_039, TC_047, TC_051 (9 TC) — `TC_051` bổ sung 19-09-2026 |
 | 3 | API | ➖ | QA **không có quyền** gọi API — **đội Dev xác minh**. Chốt với PO ngày 11-09-2026 |
 | 3 | Database | ➖ | QA **không có quyền** truy cập cơ sở dữ liệu — **đội Dev xác minh**. Chốt với PO ngày 11-09-2026 |
 | 3 | Integration | ➖ | QA không có quyền kiểm tầng tích hợp — **đội Dev xác minh**. TC_003 đã xác nhận trang đăng nhập **không** dùng đăng nhập bên thứ ba nào, nên bề mặt tích hợp của module này bằng không |
@@ -203,7 +198,7 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | 4 | Regression | ➖ | Module có **5 bug đang mở**, **chưa bug nào được fix** (`BUG_login_1787226515_TC018` đóng 19-09-2026 vì *không phải lỗi*, không phải fix) nên chưa có lỗi cũ để chống tái phát. Rà lại nhánh này ngay khi bug đầu tiên được fix — nguồn: `docs/bugs/login/` |
 | 4 | E2E | ➖ | Module xác thực nằm trọn trong một màn hình. Luồng xuyên module thuộc phạm vi `/generate-cross-module-test-plan` |
 
-**Tổng: 59 TC · 85 biến thể** (bổ sung 24-09-2026: 8 TC · 16 biến thể — `TC_052`→`TC_059` · phần bổ sung 11-09-2026: 9 TC · 19 biến thể — `TC_048` bỏ biến thể ô `Password` ngày 19-09-2026 · bổ sung 19-09-2026: 1 TC · 1 biến thể · `TC_018` bỏ biến thể email dài ngày 19-09-2026 — trùng `TC_046-c`).
+**Tổng: 51 TC · 69 biến thể** (phần bổ sung 11-09-2026: 9 TC · 19 biến thể — `TC_048` bỏ biến thể ô `Password` ngày 19-09-2026 · bổ sung 19-09-2026: 1 TC · 1 biến thể · `TC_018` bỏ biến thể email dài ngày 19-09-2026 — trùng `TC_046-c`).
 
 ---
 
@@ -228,10 +223,10 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 | Bộ | TC | Số lượng | Thời gian ước tính |
 |---|---|---|---|
 | **Smoke** (`@Smoke`) | TC_001, TC_002, TC_005, TC_011-`a`, TC_013-`a`, TC_021-`a`, TC_032, TC_035, TC_036-`a` | 9 | ~12 phút |
-| **Regression đầy đủ** | Toàn bộ trừ `@Slow` | 57 | ~4 giờ 10 phút |
+| **Regression đầy đủ** | Toàn bộ trừ `@Slow` | 49 | ~3 giờ 40 phút |
 | **QA tự chạy — KHÔNG qua `/execute-test-cases`, KHÔNG automation** (`@Slow` + `@PersonalOnly`) | TC_026, TC_051 | 2 | ~65 + ~70 phút — chạy song song được nếu mở 2 cửa sổ trình duyệt riêng |
-| **Cần DevTools** (`@TechCheck`) — phần 🔧 của các TC dưới đây | TC_001, TC_002, TC_003, TC_005, TC_006, TC_008, TC_009, TC_012, TC_015, TC_016, TC_017, TC_018, TC_019, TC_023, TC_024, TC_025, TC_027, TC_030, TC_032, TC_036, TC_037, TC_039, TC_041, TC_047, TC_048, TC_052 | 26 | ~55 phút (chỉ phần 🔧) |
-| **Chờ recon bổ sung** (`@NeedsVerify`) | TC_057, TC_058, TC_059 | 3 | ~20 phút — chạy tay một lần, đo xong thì gỡ tag |
+| **Cần DevTools** (`@TechCheck`) — phần 🔧 của các TC dưới đây | TC_001, TC_002, TC_003, TC_005, TC_006, TC_008, TC_009, TC_012, TC_015, TC_016, TC_017, TC_018, TC_019, TC_023, TC_024, TC_025, TC_027, TC_030, TC_032, TC_036, TC_037, TC_039, TC_041, TC_047, TC_048 | 25 | ~55 phút (chỉ phần 🔧) |
+| **Chờ recon bổ sung** (`@NeedsVerify`) | TC_024 (chỉ mục 🔧`2`) | 1 | — |
 
 > 🔝 **Thứ tự chạy:** Nhóm B (đăng nhập thành công) chạy **đầu tiên** trong mọi bộ — `RISK-LOGIN-06` chỉ ra module này là cổng vào của 23 module còn lại, hỏng ở đây là chặn toàn bộ đợt kiểm thử.
 >
@@ -245,7 +240,6 @@ Một số yêu cầu — cookie ghi nhớ, mã chống CSRF, header bảo mật
 
 | Ngày | Nguồn | Thay đổi | TC ảnh hưởng |
 |---|---|---|---|
-| 24-09-2026 | `/review-testcases` mode FIX — [báo cáo review](review/testcase_review_report_web_20260923.md) · phạm vi theo quyết định user: **chỉ bổ sung TC cho 6 gap**, không sửa TC cũ, không dọn index, giữ tên biến `.env`, giữ nguyên `web/parts/` | **Thêm 8 TC `TC_052`→`TC_059` (16 biến thể), TC_001→TC_051 giữ nguyên hoàn toàn.** V2 · Validation: `TC_052` tên miền sai (trình duyệt chặn) · `TC_053` tên miền không đuôi (máy chủ chặn) · `TC_054` ký tự đặc biệt hợp lệ trước `@` · `TC_055`/`TC_056` định dạng email trang Quên mật khẩu (trình duyệt / máy chủ). V2 · Error Guessing: `TC_057` hai phiên cùng tài khoản (`ASM-10` mới). V3 · Security: `TC_058` đăng xuất ở tab khác. V2 · UI Behavior: `TC_059` Enter trong ô Password.<br>**Recon thật 24-09-2026** (email/mật khẩu giả, không tạo phiên, không gửi mail) chốt Expected của `TC_052`–`TC_056`; `TC_057`–`TC_059` gắn `@NeedsVerify` (cần đăng nhập thật / công cụ không gửi được form bằng Enter).<br>Index: dải TC · coverage REQ-02/06/13/14/23/32/33 · Assumptions · Vùng chưa có evidence · 4 vòng · tổng · bộ chạy (dòng `@NeedsVerify` cũ của `TC_024` đã hết hiệu lực, thay bằng 3 TC mới) · cảnh báo `web/parts/` không có hiệu lực.<br>**Mốc git trước khi sửa: không có** — `docs/testcases/login/` chưa được git theo dõi, user chọn sửa luôn. Bản trước khi sửa chỉ chép tạm vào scratchpad của phiên, **ngoài repo** | ➕ `CRM_LOGIN_TC_052` → `CRM_LOGIN_TC_059` |
 | 21-09-2026 | Quy ước đặt tên | Đổi tên file index `test_cases_login.md` → `TEST_CASES_LOGIN_SUMMARY.md` — quy ước mới: index IN HOA để khác hẳn file nền tảng. Nội dung, mã REQ/TC không đổi; mọi link trỏ tới đã sửa | — |
 | 19-09-2026 | Quyết định PO `AMB-LOGIN-20` → `REQ-LOGIN-44` | **`TC_039`:** cột REQ `REQ-LOGIN-01` → `REQ-LOGIN-44` (REQ cũ không nói gì về HTTPS — truy vết nhầm). Gỡ ghi chú "chưa được xác nhận là yêu cầu đã chốt". Thêm tiền đề **tắt HTTPS-Upgrades của Chrome** — Chrome tự nâng `http://` lên `https://` nên chấm bằng thanh địa chỉ sẽ PASS giả. Đo lại bằng `curl -I`: vẫn `200`, không HSTS → vẫn FAIL, bug giữ mở. `ASM-07` ✅. Độ phủ **40/40 REQ**, số TC không đổi.<br>**Mốc git trước khi sửa:** `5d10845` | `CRM_LOGIN_TC_039` ✏️ — TC ID giữ nguyên |
 | 19-09-2026 | Recon bổ sung vùng chưa có evidence | **`TC_024` mục 🔧`2`:** đổi kỳ vọng từ "sau F5 mã **khác**" sang "mã **giữ nguyên** trong phiên, phiên mới mới đổi" theo kết quả đo (cùng phiên 3 lần nạp → cùng mã; 2 phiên → 2 mã khác). Gỡ `@NeedsVerify`, `ASM-05` ✅. Module **hết vùng chưa có evidence**. Không đổi TC ID, không đổi số TC | (chưa commit) |
