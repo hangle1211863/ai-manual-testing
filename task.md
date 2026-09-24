@@ -1,8 +1,8 @@
-# Task: Sinh TC module LOGIN (web) — QUICK · GỘP · rủi ro Cao → Đầy đủ
+# Task: Sinh TC module LOGIN — FULL RBT · độ hạt GỘP · 48 TC
 
-- [x] Batch 1 — V1 Smoke (9 TC) → web/parts/part_01_web_giao_dien_nhap_lieu.md
-- [x] Batch 2 — V2a Validation biểu mẫu đăng nhập (14 TC · 36 biến thể) → part_01
-- [x] Batch 3 — V2b Remember me · Quên mật khẩu · Đăng xuất · Error guessing (≈9 TC) → web/parts/part_02_web_phien_bao_mat.md
-- [x] Batch 4 — V3 Technical: phân quyền · bảo mật phiên (≈15 TC) → part_02
-- [x] Batch 5 — V4 Non-functional (≈7 TC) → part_02
-- [x] Quality Gate + index TEST_CASES_LOGIN_SUMMARY.md + cập nhật docs/testcases/README.md
+- [x] Batch 1 — V1 Smoke (8 TC) → web/test_cases_login_web.md
+- [x] Batch 2 — V2a Nhập liệu & đăng nhập thất bại (17 TC · 34 case)
+- [x] Batch 3 — V2b Quên mật khẩu · phiên · đăng xuất (13 TC · 23 case)
+- [x] Batch 4 — V3 Technical (7 TC · 8 case)
+- [x] Batch 5 — V4 Non-functional (3 TC · 5 case)
+- [x] Bước 6 — Index TEST_CASES_LOGIN_SUMMARY.md + docs/testcases/README.md + Quality Gate
