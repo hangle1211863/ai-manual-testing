@@ -235,7 +235,7 @@ Triggers when user asks:
 
 Use workflow: `update-automation-from-impact`
 
-> Mắt xích **cuối** của chuỗi delta 3 tầng: `update-requirements-from-ticket` → `update-testcases-from-impact` → workflow này. Đầu vào là file **`docs/testcases/<module>/impact/delta_tc_<TICKET-ID>.md`** do tầng giữa ghi ra — chỉ có Impact Report mà chưa có file này nghĩa là TC chưa đồng bộ, phải dừng. Bỏ tầng giữa là sửa script theo kỳ vọng cũ — TC còn mô tả hành vi cũ thì script sửa xong vẫn sai mà vẫn xanh.
+> Mắt xích **cuối** của chuỗi delta 3 tầng: `update-requirements-from-ticket` → `update-testcases-from-impact` → workflow này. Đầu vào là file **`docs/testcases/<module>/impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md`** do tầng giữa ghi ra — chỉ có Impact Report mà chưa có file này nghĩa là TC chưa đồng bộ, phải dừng. Bỏ tầng giữa là sửa script theo kỳ vọng cũ — TC còn mô tả hành vi cũ thì script sửa xong vẫn sai mà vẫn xanh.
 >
 > TC đổi → sửa **đúng phần đổi** trong script đã có, **tách theo nền tảng** của TC (web · mobile `@Android`/`@iOS` · API), mỗi nền tảng một lượt. 2 modes: PLAN (kế hoạch) và APPLY (sửa + chạy lại).
 >

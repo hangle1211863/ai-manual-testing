@@ -696,7 +696,7 @@ docs/requirements/
 │   ├── analysis/                          ← phân tích ticket — CẤP MODULE (ticket thường cắt ngang nền tảng)
 │   │   └── analysis_<TICKET-ID>.md
 │   └── impact/                            ← Impact Report của /update-requirements-from-ticket · /generate-requirements-from-api
-│       └── impact_<TICKET-ID>.md          ← input BẮT BUỘC cho /update-testcases-from-impact
+│       └── impact_<TICKET-ID>_<YYYYMMDD-HHmm>.md          ← input BẮT BUỘC cho /update-testcases-from-impact
 ```
 
 **Quy tắc thư mục — bất biến:**

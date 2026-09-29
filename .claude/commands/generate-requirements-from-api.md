@@ -67,7 +67,7 @@ skills:
 **0.3 — Có bản đồ API chưa?**
 
 - `_discovery/api_map.md` **đã có** → tải lại spec, so `sha256` với snapshot mới nhất trong `sources/`. Khớp → sang Bước 1. Khác → snapshot mới, ghi operation thêm/bỏ/đổi vào Nhật ký khám phá của `api_map.md`, rồi sang Bước 1
-- Spec đổi **và** module đã có REQ API → lần chạy này là **delta**, không sinh lại: operation mới → REQ mới nối tiếp mã · operation đổi schema/status/auth → **giữ mã**, sửa nội dung, trạng thái 🟡 · operation bị gỡ → REQ 🔴 Deprecated, **không xoá dòng**. Mỗi thay đổi 1 dòng Nhật ký (skill 6.9) kèm cột `TC cần xử lý`, và xuất Impact Report `impact/impact_spec_<YYYY-MM-DD>.md` cùng mẫu của `/update-requirements-from-ticket` để `/update-testcases-from-impact` dùng được
+- Spec đổi **và** module đã có REQ API → lần chạy này là **delta**, không sinh lại: operation mới → REQ mới nối tiếp mã · operation đổi schema/status/auth → **giữ mã**, sửa nội dung, trạng thái 🟡 · operation bị gỡ → REQ 🔴 Deprecated, **không xoá dòng**. Mỗi thay đổi 1 dòng Nhật ký (skill 6.9) kèm cột `TC cần xử lý`, và xuất Impact Report `impact/impact_spec_<YYYY-MM-DD>_<YYYYMMDD-HHmm>.md` cùng mẫu của `/update-requirements-from-ticket` để `/update-testcases-from-impact` dùng được
 - **Chưa có** → chạy tầng khám phá API trước theo `/discover-system` **nhánh API** (Bước 3-A) — đến hết checkpoint chốt prefix. Không tự cấp prefix trong workflow này
 
 **0.4 — Năng lực gọi API:** đọc dòng `Năng lực kiểm thử của QA` ở danh mục.

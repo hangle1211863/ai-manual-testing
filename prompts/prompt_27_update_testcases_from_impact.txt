@@ -8,7 +8,7 @@
 [Chọn 1 trong 2 cách:]
 
 ## Cách 1: Impact Report (từ /update-requirements-from-ticket)
-- File path: [VD: docs/requirements/project/impact/impact_TICKET-123.md]
+- File path: [VD: docs/requirements/project/impact/impact_TICKET-123_20260817-0930.md]
 - Hoặc dán bảng "Test case cần xử lý" vào đây:
 ```
 [DÁN BẢNG IMPACT REPORT]
@@ -35,4 +35,4 @@
 - Ghi mốc git (hash commit) của file TRƯỚC khi sửa — KHÔNG tạo thư mục archive/; file có thay đổi chưa commit thì dừng, nhắc commit trước
 - GIỮ NGUYÊN mọi TC ID. TC mới cấp số tiếp dải hiện có
 - TC của chức năng bị gỡ: gắn tag @Deprecated + tiền tố "🗑️ Deprecated (<TICKET-ID>, <ngày>) —" ở Test Scenario, KHÔNG xoá dòng
-- Mode APPLY: ghi Delta TC List ra docs/testcases/<module>/impact/delta_tc_<TICKET-ID>.md (có cột Nền tảng) — đầu vào của /update-automation-from-impact (prompt_19)
+- Mode APPLY: ghi Delta TC List ra docs/testcases/<module>/impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md (có cột Nền tảng) — đầu vào của /update-automation-from-impact (prompt_19)

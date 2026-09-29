@@ -101,9 +101,11 @@ Sửa **tại chỗ** `REQUIREMENTS_<TÊN_MODULE>_SUMMARY.md`, theo đúng thứ
 
 ### Bước 6: Xuất Impact Report (giá trị cao nhất của workflow)
 
-Báo cáo riêng cho tester. **PHẢI ghi ra file** `docs/requirements/<module>/impact/impact_<TICKET-ID>.md`, đồng thời hiển thị trong chat và là cột `TC cần xử lý` trong Nhật ký.
+Báo cáo riêng cho tester. **PHẢI ghi ra file** `docs/requirements/<module>/impact/impact_<TICKET-ID>_<YYYYMMDD-HHmm>.md`, đồng thời hiển thị trong chat và là cột `TC cần xử lý` trong Nhật ký.
 
-> 🚨 **Không được để Impact Report chỉ nằm trong chat.** Nó là input **bắt buộc** của `/update-testcases-from-impact`, và qua file `delta_tc_<TICKET-ID>.md` mà workflow đó ghi ra, là gốc của `/update-automation-from-impact` — hai workflow này thường chạy ở phiên khác, có khi hôm sau. Đóng phiên là mất, và không có cách nào dựng lại ngoài chạy lại cả workflow.
+> 🕒 `<YYYYMMDD-HHmm>` = giờ máy lúc ghi file (`date +%Y%m%d-%H%M`), **không** tự bịa. Cập nhật lại cùng ticket (VD đợt PO trả lời AMB) → ghi **file mới** có datetime mới, không ghi đè file cũ. Quy tắc đầy đủ: `/update-testcases-from-impact` mục *Quy tắc hậu tố datetime*.
+
+> 🚨 **Không được để Impact Report chỉ nằm trong chat.** Nó là input **bắt buộc** của `/update-testcases-from-impact`, và qua file `delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` mà workflow đó ghi ra, là gốc của `/update-automation-from-impact` — hai workflow này thường chạy ở phiên khác, có khi hôm sau. Đóng phiên là mất, và không có cách nào dựng lại ngoài chạy lại cả workflow.
 
 Nội dung file:
 
@@ -158,7 +160,7 @@ Nội dung file:
 - **PHẢI ghi Nhật ký thay đổi** — mọi thay đổi, kể cả biên tập câu chữ (`✏️ Biên tập`)
 - **PHẢI giữ 4 nơi khớp nhau:** Nhật ký (6.9) ↔ Trạng thái REQ (6.2) ↔ Dải mã metadata (6.1) ↔ **Danh mục `docs/requirements/README.md`**
 - **PHẢI kiểm tra lại dòng tổng của Phân rã Epic/Story** sau khi thêm/bỏ REQ
-- **PHẢI xuất Impact Report ra file** `docs/requirements/<module>/impact/impact_<TICKET-ID>.md` — kể cả khi không có TC nào bị ảnh hưởng (ghi rõ "không tác động")
+- **PHẢI xuất Impact Report ra file** `docs/requirements/<module>/impact/impact_<TICKET-ID>_<YYYYMMDD-HHmm>.md` — kể cả khi không có TC nào bị ảnh hưởng (ghi rõ "không tác động")
 - **PHẢI báo đường dẫn file Impact Report** ở cuối, kèm command kế tiếp `/update-testcases-from-impact`
 - **PHẢI đối chiếu ticket với AMB đang treo** (Bước 4) — đây là chỗ hay bị bỏ sót nhất
 - **PHẢI viết bằng Tiếng Việt**, format Markdown
@@ -173,5 +175,5 @@ Nội dung file:
 | Sau đó — sinh TC cho REQ mới (🟢) | `/generate-testcases-manual-rbt` hoặc `/generate-testcases-from-requirements` |
 | Sau đó — chấm chất lượng bộ TC **sau khi** đã đồng bộ | `/review-testcases` |
 | Sau đó — cập nhật ma trận truy vết | `/generate-traceability-matrix` |
-| Sau khi TC đã đồng bộ — cập nhật automation script **đã có** (đọc `delta_tc_<TICKET-ID>.md`, **không** đọc thẳng Impact Report) | `/update-automation-from-impact` |
+| Sau khi TC đã đồng bộ — cập nhật automation script **đã có** (đọc `delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md`, **không** đọc thẳng Impact Report) | `/update-automation-from-impact` |
 | Sau đó — automate TC mới hoàn toàn (chưa có script) | `/generate-automation-from-testcases` |

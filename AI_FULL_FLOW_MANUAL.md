@@ -429,7 +429,7 @@ Hệ thống đang phát triển thì ticket sẽ liên tục sửa yêu cầu. 
    ↓                                               ↓
 REQ mới (🟢) → /generate_testcases_*     TC phải sửa (🟡) + TC bị gỡ (🗑️)
                                               → /update-testcases-from-impact
-                                                   ↓  Delta TC List — impact/delta_tc_<TICKET-ID>.md
+                                                   ↓  Delta TC List — impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md
                                               Module đã có automation?
                                                    → /update-automation-from-impact  (web · mobile · API)
    └────────────────────┬─────────────────────────┘
@@ -437,7 +437,7 @@ REQ mới (🟢) → /generate_testcases_*     TC phải sửa (🟡) + TC bị 
             /execute-test-cases  (chạy lại phần bị ảnh hưởng)
 ```
 
-> **Tầng thứ ba chỉ chạy khi module đã có automation.** `/update-testcases-from-impact` mode APPLY ghi `delta_tc_<TICKET-ID>.md` — danh sách TC đã sửa kèm nền tảng. `/update-automation-from-impact` đọc đúng file đó, sửa script web · mobile · API tương ứng và chạy lại. Chi tiết: [`AI_FULL_FLOW_AUTOMATION.md`](AI_FULL_FLOW_AUTOMATION.md) chặng 5.
+> **Tầng thứ ba chỉ chạy khi module đã có automation.** `/update-testcases-from-impact` mode APPLY ghi `delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` — danh sách TC đã sửa kèm nền tảng. `/update-automation-from-impact` đọc đúng file đó, sửa script web · mobile · API tương ứng và chạy lại. Chi tiết: [`AI_FULL_FLOW_AUTOMATION.md`](AI_FULL_FLOW_AUTOMATION.md) chặng 5.
 
 > 🚨 **Không dùng `/review-testcases` mode FIX cho nhánh 🟡.** Nó chấm rubric chất lượng, không đối chiếu với REQ mới — TC viết rất tốt về hành vi **cũ** vẫn đạt 12/12 điểm, và nó không sinh Delta TC List cho automation. Đồng bộ bằng `/update-testcases-from-impact` trước, chấm chất lượng bằng `/review-testcases` sau.
 

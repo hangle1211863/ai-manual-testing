@@ -27,16 +27,16 @@ skills:
 Mắt xích **cuối** của chuỗi delta 3 tầng: requirements đổi → TC được đồng bộ → **workflow này** chỉ ra script nào phải sửa và sửa đúng chỗ đó.
 
 ```
-/update-requirements-from-ticket   → docs/requirements/<module>/impact/impact_<TICKET-ID>.md        cái gì đã đổi
+/update-requirements-from-ticket   → docs/requirements/<module>/impact/impact_<TICKET-ID>_<YYYYMMDD-HHmm>.md        cái gì đã đổi
         ↓
-/update-testcases-from-impact      → docs/testcases/<module>/impact/delta_tc_<TICKET-ID>.md         TC nào đã sửa xong, sửa gì
+/update-testcases-from-impact      → docs/testcases/<module>/impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md         TC nào đã sửa xong, sửa gì
         ↓
-/update-automation-from-impact     → docs/testcases/<module>/impact/automation_plan_<TICKET-ID>.md  ← WORKFLOW NÀY
+/update-automation-from-impact     → docs/testcases/<module>/impact/automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md  ← WORKFLOW NÀY
         ↓
 /generate-traceability-matrix      khớp lại RTM
 ```
 
-> 🚨 **Đầu vào là Delta TC List, không phải Impact Report.** Impact Report nói REQ nào đổi — chưa nói TC đã được sửa xong chưa, sửa thành gì. Chỉ có Impact Report mà **không** có `delta_tc_<TICKET-ID>.md` = TC chưa đồng bộ → **DỪNG**, chạy `/update-testcases-from-impact` mode APPLY trước.
+> 🚨 **Đầu vào là Delta TC List, không phải Impact Report.** Impact Report nói REQ nào đổi — chưa nói TC đã được sửa xong chưa, sửa thành gì. Chỉ có Impact Report mà **không** có `delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` = TC chưa đồng bộ → **DỪNG**, chạy `/update-testcases-from-impact` mode APPLY trước.
 >
 > Sửa script khi TC chưa đồng bộ là sửa theo kỳ vọng không ai kiểm: TC vẫn mô tả hành vi cũ, script đổi sang hành vi mới, hai bên lệch nhau — và suite vẫn xanh nên không ai phát hiện.
 
@@ -68,7 +68,7 @@ Mắt xích **cuối** của chuỗi delta 3 tầng: requirements đổi → TC 
 
 | Mode | Khi nào sử dụng | Output |
 |---|---|---|
-| **PLAN** (mặc định) | Cần biết thay đổi này đụng tới script nào, ở nền tảng nào, tốn bao nhiêu | `automation_plan_<TICKET-ID>.md`: bảng ánh xạ + kế hoạch sửa từng script |
+| **PLAN** (mặc định) | Cần biết thay đổi này đụng tới script nào, ở nền tảng nào, tốn bao nhiêu | `automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md`: bảng ánh xạ + kế hoạch sửa từng script |
 | **APPLY** | Muốn agent sửa luôn | Như PLAN + code đã sửa + kết quả chạy lại theo từng nền tảng |
 
 > User nói "sửa luôn", "cập nhật script đi", "apply" → tự động **Mode APPLY**.
@@ -77,7 +77,7 @@ Mắt xích **cuối** của chuỗi delta 3 tầng: requirements đổi → TC 
 
 | Input | Bắt buộc? | Ghi chú |
 |---|---|---|
-| **Delta TC List** | ⭐ Bắt buộc | `docs/testcases/<module>/impact/delta_tc_<TICKET-ID>.md` — do `/update-testcases-from-impact` mode APPLY ghi ra. User chỉ đưa mã ticket → tìm `docs/testcases/**/impact/delta_tc_<TICKET-ID>.md` (kể cả trong namespace `_<hệ-thống>/`). Ticket chạm nhiều module → **mỗi module một lượt**, mỗi module một file kế hoạch |
+| **Delta TC List** | ⭐ Bắt buộc | `docs/testcases/<module>/impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` — do `/update-testcases-from-impact` mode APPLY ghi ra. User chỉ đưa mã ticket → glob `docs/testcases/**/impact/delta_tc_<TICKET-ID>_*.md` (kể cả trong namespace `_<hệ-thống>/`), lấy file có datetime **lớn nhất** — file cũ không có datetime coi là cũ hơn. Ticket chạm nhiều module → **mỗi module một lượt**, mỗi module một file kế hoạch |
 | **Danh sách TC đã đổi** | Thay thế — chỉ khi TC được **sửa tay**, không qua workflow | TC ID + đổi cái gì. **Bắt buộc kiểm** Nhật ký thay đổi của file TC có dòng ghi nhận thay đổi đó — không có thì coi như TC chưa sửa, hỏi user. Không có ticket → hậu tố file kế hoạch là `adhoc_<YYYY-MM-DD>` |
 | **File test cases hiện hành** | ⭐ Agent tự mở | Index `TEST_CASES_<TÊN_MODULE>_SUMMARY.md` → `## Bản đồ tài liệu` → file nền tảng chứa từng TC trong delta. **Nguồn sự thật của kỳ vọng mới** |
 | **Mốc git trước khi sửa** | ⭕ Khuyến nghị | Hash commit của từng file nền tảng — ghi ở đầu Delta TC List. `git diff <hash> -- <file>` ra đúng ô đã đổi, khỏi đoán |
@@ -93,8 +93,8 @@ Mắt xích **cuối** của chuỗi delta 3 tầng: requirements đổi → TC 
 
 ### Bước 1: Đọc Delta & tách theo nền tảng
 
-1. Đọc `delta_tc_<TICKET-ID>.md`: bảng thông tin đầu file (ticket · Impact Report nguồn · bản sao lưu từng nền tảng · trạng thái) + bảng **TC đã xử lý**
-2. Đã có `automation_plan_<TICKET-ID>.md` từ lần chạy trước → đây là **lần chạy lại**: chỉ nhận dòng Delta **chưa có** trong kế hoạch cũ hoặc **đã đổi hành động** (VD `⏸️` → `✏️` sau khi recon bổ sung). Cập nhật tại chỗ file kế hoạch, không tạo file thứ hai
+1. Đọc `delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md`: bảng thông tin đầu file (ticket · Impact Report nguồn · bản sao lưu từng nền tảng · trạng thái) + bảng **TC đã xử lý**
+2. Đã có `automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md` từ lần chạy trước → đây là **lần chạy lại**: chỉ nhận dòng Delta **chưa có** trong kế hoạch cũ hoặc **đã đổi hành động** (VD `⏸️` → `✏️` sau khi recon bổ sung). Ghi **file kế hoạch mới** `automation_plan_<TICKET-ID>_<datetime mới>.md` (đầy đủ nội dung, dòng `Thay thế | <tên file cũ>`), **không** sửa file của lần chạy trước — quy tắc hậu tố datetime ở `/update-testcases-from-impact`
 3. Phân nhóm theo cột **Hành động đã làm**:
 
    | Hành động trong Delta TC List | Xử lý ở workflow này |
@@ -154,14 +154,14 @@ Mỗi mục ghi: **nền tảng** · `file:line` · đổi gì · cần recon g�
 
 ### Bước 4: Báo Cáo & Xin Duyệt (CHECKPOINT)
 
-1. Ghi `docs/testcases/<module>/impact/automation_plan_<TICKET-ID>.md` — **cùng hậu tố** với Delta TC List:
+1. Ghi `docs/testcases/<module>/impact/automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md` — **cùng hậu tố** với Delta TC List:
 
    ```markdown
    # Kế hoạch cập nhật automation — TICKET-123 · module `project`
 
    | Mục | Giá trị |
    |---|---|
-   | Delta TC List nguồn | [`delta_tc_TICKET-123.md`](delta_tc_TICKET-123.md) |
+   | Delta TC List nguồn | [`delta_tc_TICKET-123_20260817-0930.md`](delta_tc_TICKET-123_20260817-0930.md) |
    | Ngày lập | 17-08-2026 |
    | Mode | PLAN |
    | Nền tảng trong phạm vi | web 2 TC · mobile 1 TC (`@Android @iOS`) · api 1 TC |
@@ -244,7 +244,7 @@ Còn đỏ:
 
 ### Bước 7: Báo Cáo Cuối
 
-Cập nhật tại chỗ `automation_plan_<TICKET-ID>.md`:
+Cập nhật tại chỗ `automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md`:
 
 - **File đã sửa, tách theo nền tảng** — `file:line`, code cũ → mới
 - **Kết quả chạy, tách theo nền tảng** (mobile tách tiếp Android / iOS): test trong delta + test hồi quy
@@ -257,7 +257,7 @@ Chat chỉ hiện tóm tắt theo nền tảng + đường dẫn file kế hoạ
 ## Output
 
 ### Mode PLAN
-- `docs/testcases/<module>/impact/automation_plan_<TICKET-ID>.md`: bảng ánh xạ TC → script tách theo nền tảng, kế hoạch sửa từng file, ngoài phạm vi, cần xác nhận, việc cần dev
+- `docs/testcases/<module>/impact/automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md`: bảng ánh xạ TC → script tách theo nền tảng, kế hoạch sửa từng file, ngoài phạm vi, cần xác nhận, việc cần dev
 
 ### Mode APPLY
 - Tất cả output Mode PLAN, cộng thêm:

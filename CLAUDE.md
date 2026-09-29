@@ -251,7 +251,7 @@ docs/
 │       ├── api/
 │       │   └── requirements_<module>_api.md   ← Endpoint Catalog · REQ chỉ API · Field Spec JSON · Nguồn spec
 │       ├── analysis/analysis_<TICKET-ID>.md   ← phân tích ticket — CẤP MODULE (ticket cắt ngang nền tảng)
-│       └── impact/impact_<TICKET-ID>.md       ← Impact Report — CẤP MODULE, input cho tầng test case
+│       └── impact/impact_<TICKET-ID>_<YYYYMMDD-HHmm>.md       ← Impact Report — CẤP MODULE, input cho tầng test case
 │
 ├── testcases/
 │   ├── README.md                              ← DANH MỤC test cases
@@ -261,9 +261,9 @@ docs/
 │       ├── mobile/test_cases_<module>_mobile.md ← TC chạy trên app (tag @Android / @iOS)
 │       ├── api/test_cases_<module>_api.md     ← TC gọi API
 │       ├── <nền-tảng>/parts/part_NN_<nền-tảng>_<slug>.md ← khi file nền tảng > 40 TC
-│       ├── impact/impact_plan_<TICKET-ID>.md  ← /update-testcases-from-impact — kế hoạch, trước khi duyệt
-│       ├── impact/delta_tc_<TICKET-ID>.md     ← /update-testcases-from-impact APPLY — TC đã sửa theo nền tảng, input của automation
-│       ├── impact/automation_plan_<TICKET-ID>.md ← /update-automation-from-impact — script đã sửa theo ticket
+│       ├── impact/impact_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md  ← /update-testcases-from-impact — kế hoạch, trước khi duyệt
+│       ├── impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md     ← /update-testcases-from-impact APPLY — TC đã sửa theo nền tảng, input của automation
+│       ├── impact/automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md ← /update-automation-from-impact — script đã sửa theo ticket
 │       ├── review/testcase_review_report_<nền-tảng>_<YYYYMMDD>.md ← /review-testcases — mode FIX sửa TC TẠI CHỖ, không sinh bản `_improved`
 │       └── review/automation_review_<nền-tảng>_<YYYYMMDD>.md ← /review-testcases mode AUTOMATION — TC nào làm automation được
 │
@@ -325,6 +325,7 @@ Ba trang tĩnh trong `scripts/`, mở bằng cách double-click, chạy offline,
 | Tên file index **luôn** `REQUIREMENTS_<TÊN_MODULE>_SUMMARY.md` / `TEST_CASES_<TÊN_MODULE>_SUMMARY.md` (IN HOA — `<TÊN_MODULE>` = tên thư mục module viết HOA, `-` đổi thành `_` (VD `login` → `LOGIN`, `customers` → `CUSTOMERS`) — **không phải** prefix REQ (`CUST`)) / `user_guide_<module>.md` | Mọi workflow phía sau đọc theo mẫu `docs/<nhánh>/<module>/<file>`. Đổi tên là vỡ chuỗi RTM. IN HOA để file tổng **khác hẳn** file nền tảng `requirements_<module>_<nền-tảng>.md` / `test_cases_<module>_<nền-tảng>.md` — trước đây `test_cases_login.md` và `web/test_cases_login_web.md` trông gần như nhau, dễ mở nhầm. Giữ tên module trong tên file để tab editor / kết quả tìm kiếm vẫn biết đang ở module nào |
 | Tài liệu cũ còn index tên `requirements_<module>.md` / `test_cases_<module>.md` (quy ước trước 21-09-2026) | Workflow đọc **nhận cả hai tên**. Lần đầu một workflow sinh/cập nhật chạm lại module → đổi tên **một lần** sang tên mới, sửa mọi link trỏ tới, ghi Nhật ký. Không tự đổi hàng loạt khi chỉ đọc |
 | **KHÔNG** nhét số phiên bản vào tên index (`_v2`, `_new`, `_index`…) | Bản mới **thay thế** index tại chỗ; bản cũ tra bằng **lịch sử git** — `docs/` **không** có thư mục `archive/` |
+| 🕒 **Mọi file trong thư mục `impact/` mang hậu tố datetime** `_<YYYYMMDD-HHmm>`: `impact_<TICKET-ID>_…` · `impact_plan_…` · `delta_tc_…` · `automation_plan_…` (VD `impact_plan_CRM-LOGIN-101-B_20260929-1306.md`). Giờ = giờ máy **lúc tạo chính file đó** (`date +%Y%m%d-%H%M`), không chép từ file nguồn. **Mỗi lần chạy workflow = một file mới**, không ghi đè file của lần chạy trước. Chỉ có mã ticket → đọc file có datetime **lớn nhất** khớp `<loại>_<TICKET-ID>_*.md`; file cũ chưa có datetime coi là cũ hơn. Chi tiết: `/update-testcases-from-impact` mục đầu | Một ticket chạy nhiều lần (đợt A/B, PLAN lại sau khi duyệt) sinh nhiều file — nhìn tên biết ngay bản nào mới nhất. Datetime là **dấu thời điểm**, không phải số phiên bản — quy tắc cấm `_v2` chỉ áp cho file index |
 | Mỗi module một prefix **duy nhất** (`LOGIN`, `CUST`, `PRJ`…) | Chống trùng mã giữa các module — tra ở danh mục trước khi đặt |
 | **Một nghiệp vụ = một prefix trên mọi nền tảng** — web, app Android/iOS, API của cùng nghiệp vụ chung prefix, chung **thư mục module**, chung **dải REQ ID / TC ID**; nội dung riêng từng nền tảng nằm ở tầng `web/` · `mobile/` · `api/`, REQ áp ≥ 2 nền tảng nằm ở index. ❌ `LOGIN_APP`, `MCUST`, `docs/requirements/login_mobile/` | Tách prefix theo nền tảng là nhân đôi REQ cho cùng một rule — sửa ở web quên sửa ở app, RTM vẫn báo phủ đủ. Namespace `_<hệ-thống>/` **chỉ** dành cho hệ thống khác nghiệp vụ, không cho app/API của cùng hệ thống |
 | **KHÔNG đánh lại mã REQ từ `01`** khi module đã có tài liệu | Đụng mã là vỡ toàn bộ traceability |
@@ -507,7 +508,7 @@ Agent sử dụng workflows trong `.claude/commands/` qua slash commands:
 | `/generate-testcases-manual-rbt`        | Sinh manual test cases theo AI-RBT 6 bước (FULL RBT mode) — sinh tuần tự theo **4 vòng** (Smoke → Functional → Technical → Non-functional), có bảng đối soát loại kiểm thử ở Quality Gate |
 | `/generate-testcases-from-requirements` | Sinh test cases nhanh từ requirements (QUICK mode)         |
 | `/generate-checklist-test`              | Sinh checklist test tick tay (CHECKLIST mode) — smoke / post-hotfix / regression / release-readiness |
-| `/update-testcases-from-impact`         | **Delta mode cho test cases** — mắt xích giữa của chuỗi delta 3 tầng: từ Impact Report sửa TC stale tại chỗ, giữ nguyên TC ID, đánh dấu 🗑️ Deprecated TC bị gỡ, ghi Delta TC List ra `impact/delta_tc_<TICKET-ID>.md` có cột nền tảng (2 modes: PLAN/APPLY). KHÔNG sinh lại cả module |
+| `/update-testcases-from-impact`         | **Delta mode cho test cases** — mắt xích giữa của chuỗi delta 3 tầng: từ Impact Report sửa TC stale tại chỗ, giữ nguyên TC ID, đánh dấu 🗑️ Deprecated TC bị gỡ, ghi Delta TC List ra `impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` có cột nền tảng (2 modes: PLAN/APPLY). KHÔNG sinh lại cả module |
 | `/generate-automation-from-testcases`   | **Bộ định tuyến** — tự nhận nền tảng của file TC (`web/` · `mobile/` · `api/`) rồi chuyển sang command nền tảng. Mode WEB (mặc định) / MOBILE / API để chỉ định rõ. Không chứa logic sinh code |
 | `/generate-automation-web`              | Sinh automation **web** (Playwright / Selenium) — mode TC (từ file TC web, mặc định) · mode FLOW (chưa có TC, chạy thật UI flow trên browser) |
 | `/generate-automation-mobile`           | Sinh automation **Appium** — Native Android/iOS, **Flutter**, Hybrid — mode TC (từ file TC mobile, mặc định) · mode FLOW (chưa có TC). Nhận diện loại app trước, thu locator từ UI hierarchy |
@@ -519,7 +520,7 @@ Agent sử dụng workflows trong `.claude/commands/` qua slash commands:
 | `/generate-cross-module-test-plan`    | Phân tích cross-module (2 modes: DOCUMENT/BROWSER), sinh ma trận kết hợp — mặc định Output-Class Coverage, pairwise bằng script |
 | `/generate-combinatorial-test-data`   | Sinh test data cho ma trận kết hợp — offline hoặc pipeline qua browser          |
 | `/generate-testcases-api`               | Sinh **API test cases** từ Swagger/Scalar/Redoc/OpenAPI/Postman — neo vào REQ của `/generate-requirements-from-api`, kiểm chứng gọi thật, tự nhận nguồn URL hay file. Chưa có `api_map.md` thì tự làm tầng khám phá theo skill 3.4. KHÔNG sinh code |
-| `/update-automation-from-impact`        | **Delta mode cho automation** — mắt xích cuối của chuỗi delta: đọc `delta_tc_<TICKET-ID>.md` của `/update-testcases-from-impact`, map TC đã đổi sang script **web · mobile · API** và sửa đúng phần đổi, mỗi nền tảng một lượt (2 modes: PLAN/APPLY). KHÔNG sinh lại cả module |
+| `/update-automation-from-impact`        | **Delta mode cho automation** — mắt xích cuối của chuỗi delta: đọc `delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` của `/update-testcases-from-impact`, map TC đã đổi sang script **web · mobile · API** và sửa đúng phần đổi, mỗi nền tảng một lượt (2 modes: PLAN/APPLY). KHÔNG sinh lại cả module |
 | `/run-and-fix-tests`                    | Chạy suite có sẵn, phân loại failure, tự sửa nhóm sửa được (2 modes: RUN/FIX). KHÔNG sửa test để né bug app |
 | `/heal-locators`                        | Rà & sửa locator trong Page Object sau khi UI đổi (2 modes: SCAN/HEAL) |
 | `/review-automation-code`               | Review chất lượng automation code theo Definition of Done (2 modes: REVIEW/FIX) |

@@ -20,7 +20,7 @@
 
 | Module | Prefix | Trạng thái recon | Mức phủ tài liệu | Tài liệu | REQ đã dùng | Mã kế tiếp | AMB treo | Cập nhật |
 |---|---|---|---|---|---|---|---|---|
-| Đăng nhập / Xác thực | `LOGIN` | ✅ Đã có tài liệu | ⬜ Trắng | [login/REQUIREMENTS_LOGIN_SUMMARY.md](login/REQUIREMENTS_LOGIN_SUMMARY.md) | `REQ-LOGIN-01` → `REQ-LOGIN-44` (44) | `REQ-LOGIN-45` | **0** — đã xử lý 20/20 | 19-09-2026 |
+| Đăng nhập / Xác thực | `LOGIN` | ✅ Đã có tài liệu | ⬜ Trắng | [login/REQUIREMENTS_LOGIN_SUMMARY.md](login/REQUIREMENTS_LOGIN_SUMMARY.md) | `REQ-LOGIN-01` → `REQ-LOGIN-54` (54) | `REQ-LOGIN-55` | **0** — đã xử lý 30/30 | 29-09-2026 |
 | Khách hàng | `CUST` | ✅ Đã có tài liệu | ⬜ Trắng | [customers/REQUIREMENTS_CUSTOMERS_SUMMARY.md](customers/REQUIREMENTS_CUSTOMERS_SUMMARY.md) | `REQ-CUST-01` → `REQ-CUST-84` (84) | `REQ-CUST-85` | **0** — đã xử lý 14/14 | 19-09-2026 |
 | Liên hệ khách hàng | `CONT` | ⬜ Chưa khảo sát | ⬜ Trắng | — | — | `REQ-CONT-01` | — | 14-08-2026 |
 | Khách hàng tiềm năng | `LEAD` | ⬜ Chưa khảo sát | ⬜ Trắng | — | — | `REQ-LEAD-01` | — | 14-08-2026 |
@@ -70,15 +70,15 @@ CTR · EXP · ITEM · TICK · ESTREQ · KB · REP · DASH · TODO · REM · PROF
 
 | Trạng thái | Số lượng | Chi tiết |
 |---|---|---|
-| 🟢 Active | 199 | `LOGIN` 26 · `CUST` 73 · `PRJ` 100 |
-| 🟡 Changed | 25 | `LOGIN` 16 — 15 REQ sửa trong hai đợt ngày 18-08-2026 (rà soát chất lượng + chốt quyết định PO) · `REQ-LOGIN-42` sửa 19-09-2026 (`AMB-LOGIN-19` ✅). Trong đó **`REQ-LOGIN-16` và `REQ-LOGIN-25` ghi kỳ vọng đúng mà hệ thống chưa đạt** → TC sẽ FAIL, phải mở bug · `CUST` 9 — `42`, `43`, `53`, `73`, `79` sửa 19-09-2026 (`PO-2026-09-19`) · `15`, `17`, `22`, `70` sửa 19-09-2026 (recon đối chiếu evidence). Trong đó **`REQ-CUST-42` và `REQ-CUST-43` ghi kỳ vọng đúng mà hệ thống chưa đạt** → TC sẽ FAIL, phải mở bug |
+| 🟢 Active | 197 | `LOGIN` 24 · `CUST` 73 · `PRJ` 100 |
+| 🟡 Changed | 27 | `LOGIN` 18 — **`REQ-LOGIN-15` thu hẹp 29-09-2026** (email không tồn tại không bị khoá → chỉ đúng dưới ngưỡng khoá) · 15 REQ sửa trong hai đợt ngày 18-08-2026 (rà soát chất lượng + chốt quyết định PO) · `REQ-LOGIN-42` sửa 19-09-2026 (`AMB-LOGIN-19` ✅) · **`REQ-LOGIN-41` sửa 29-09-2026** (ticket `CRM-LOGIN-101` — từ *không khoá* sang *khoá sau 5 lần sai*, deploy 30-09-2026). Trong đó **`REQ-LOGIN-16` và `REQ-LOGIN-25` ghi kỳ vọng đúng mà hệ thống chưa đạt** → TC sẽ FAIL, phải mở bug · `CUST` 9 — `42`, `43`, `53`, `73`, `79` sửa 19-09-2026 (`PO-2026-09-19`) · `15`, `17`, `22`, `70` sửa 19-09-2026 (recon đối chiếu evidence). Trong đó **`REQ-CUST-42` và `REQ-CUST-43` ghi kỳ vọng đúng mà hệ thống chưa đạt** → TC sẽ FAIL, phải mở bug |
 | 🔴 Deprecated | 0 | — |
-| ⚪ Chưa implement | 7 | `LOGIN` 2 — `REQ-LOGIN-27` và `REQ-LOGIN-40`, **cả hai ra ngoài phạm vi kiểm thử** theo quyết định PO 18-08-2026 · `CUST` 2 — `REQ-CUST-81` (Inactive bị loại khỏi mọi dropdown, chưa rà 11 module) và `REQ-CUST-82` (chặn xoá khách hàng có dữ liệu liên quan, cần môi trường riêng) · `PRJ` 4 — `REQ-PRJ-89`, `91`, `94` (CRUD mốc tiến độ / tệp / thảo luận, không chạy trên môi trường dùng chung) và `REQ-PRJ-104` (nội dung tệp `Export project data`, không tải tệp về) |
-| **Tổng** | **232** | |
+| ⚪ Chưa implement | 17 | `LOGIN` 12 — `REQ-LOGIN-27` và `REQ-LOGIN-40` **ra ngoài phạm vi kiểm thử** theo quyết định PO 18-08-2026 · `REQ-LOGIN-45` → `54` khoá tài khoản theo ticket `CRM-LOGIN-101`, **deploy dự kiến 30-09-2026** (TC viết trước, skip) · `CUST` 2 — `REQ-CUST-81` (Inactive bị loại khỏi mọi dropdown, chưa rà 11 module) và `REQ-CUST-82` (chặn xoá khách hàng có dữ liệu liên quan, cần môi trường riêng) · `PRJ` 4 — `REQ-PRJ-89`, `91`, `94` (CRUD mốc tiến độ / tệp / thảo luận, không chạy trên môi trường dùng chung) và `REQ-PRJ-104` (nội dung tệp `Export project data`, không tải tệp về) |
+| **Tổng** | **242** | |
 
 > ✅ **REQ 🟡 của `LOGIN` đã có test case** trong [`testcases/login/`](../testcases/login/TEST_CASES_LOGIN_SUMMARY.md), viết theo bản đã sửa. Khi REQ đổi tiếp, cập nhật TC bằng `/update-testcases-from-impact` — **không** dùng bản trước 18-08-2026.
 >
-> ✅ **`LOGIN` không còn Story nào BLOCKED** sau quyết định PO 18-08-2026 — phạm vi kiểm thử gồm **42/44 REQ** (2 REQ ⚪ ra ngoài phạm vi).
+> ⚠️ **`LOGIN` — phạm vi kiểm thử 50/54 REQ** (4 REQ ngoài phạm vi: `27`, `34`, `35`, `40`). Vùng khoá tài khoản (`41`, `45` → `54`) viết TC được, **chạy từ 30-09-2026** (ngày deploy) sau khi kiểm chứng trên bản deploy.
 
 ---
 
@@ -102,7 +102,9 @@ CTR · EXP · ITEM · TICK · ESTREQ · KB · REP · DASH · TODO · REM · PROF
 
 | Mã | Module | Trạng thái | Kết luận |
 |---|---|---|---|
-| AMB-LOGIN-02 | `LOGIN` | ✅ Đã trả lời 18-08-2026 | Không có cơ chế khoá tài khoản → chốt `REQ-LOGIN-41`. Kéo theo `RISK-LOGIN-03` **đóng**, `RISK-LOGIN-01` chuyển sang **xác nhận** |
+| AMB-LOGIN-02 | `LOGIN` | ✅ Đã trả lời 18-08-2026 · ⚠️ **bị thay thế 29-09-2026** | Kết luận cũ *không khoá* bị ticket `CRM-LOGIN-101` đảo: **khoá sau 5 lần sai, 15 phút, theo email** → `REQ-LOGIN-41` 🟡. `RISK-LOGIN-03` **mở lại** |
+| AMB-LOGIN-21 | `LOGIN` | ✅ Đã trả lời 29-09-2026 | ⚠️ **Khác giả định tạm**: email không tồn tại **không** bị khoá → `REQ-LOGIN-50`. Từ lần sai thứ 5 dò được email nào có tài khoản — `REQ-LOGIN-15` thu hẹp, `RISK-LOGIN-10` **chấp nhận** |
+| AMB-LOGIN-30 | `LOGIN` | ✅ Đã trả lời 29-09-2026 | Khoá tài khoản **deploy 30-09-2026**. 🚨 TC gửi sai mật khẩu bằng `admin@example.com` phải sửa trước ngày này. `AMB-LOGIN-22` → `29` trùng giả định tạm → thêm `REQ-LOGIN-51` → `54` |
 | AMB-LOGIN-04 | `LOGIN` | ⏭️ Bỏ qua 18-08-2026 | Không kiểm chứng luồng gửi mail với email có thật. `REQ-LOGIN-27` ra ngoài phạm vi · `RISK-LOGIN-04` **chấp nhận** |
 | AMB-LOGIN-14 | `LOGIN` | ⏭️ Chuyển module 18-08-2026 | Kiểm chứng popup cảnh báo timer giao cho module `TASK` — **nhớ cập nhật ngược `REQ-LOGIN-30`** khi recon `TASK` |
 | AMB-LOGIN-15 | `LOGIN` | ⏭️ Bỏ qua 18-08-2026 | Remember Me không hoạt động → `REQ-LOGIN-40` ra ngoài phạm vi · thêm `RISK-LOGIN-08` (checkbox vẫn hiển thị và vẫn cấp cookie) |
@@ -169,6 +171,8 @@ docs/requirements/
 
 | Ngày | Thay đổi |
 |---|---|
+| 29-09-2026 | **PO trả lời 10 ambiguity của `CRM-LOGIN-101`** (`CRM-LOGIN-101-B`). `LOGIN` hết ambiguity treo (30/30). Thêm `REQ-LOGIN-50` → `54` ⚪ · `REQ-LOGIN-15` 🟡 thu hẹp (`AMB-LOGIN-21` **khác** giả định tạm) · thêm `RISK-LOGIN-10`. `LOGIN` 49 → **54 REQ**. Active 198 → 197, Changed 26 → 27, ⚪ 12 → 17, Tổng 237 → 242. **Deploy 30-09-2026**. Impact Report: [login/impact/impact_CRM-LOGIN-101-B.md](login/impact/impact_CRM-LOGIN-101-B.md) |
+| 29-09-2026 | **Ticket `CRM-LOGIN-101` — khoá tài khoản** (`/update-requirements-from-ticket`). Đảo quyết định PO 18-08-2026: `REQ-LOGIN-41` 🟡 (không khoá → khoá sau 5 lần sai), thêm `REQ-LOGIN-45` → `49` ⚪ (**chưa deploy**). `LOGIN` 44 → **49 REQ**, ambiguity treo 0 → **10** (2 🔴). Active 199 → 198, Changed 25 → 26, ⚪ 7 → 12, Tổng 232 → 237. User xác nhận **có tài khoản Project Manager** — ghi chú "chỉ có role Admin" (24-09-2026) trong bộ TC là sai. Impact Report: [login/impact/impact_CRM-LOGIN-101.md](login/impact/impact_CRM-LOGIN-101.md) |
 | 21-09-2026 | **Đồng bộ danh mục với thực tế `LOGIN`/`CUST`** — không đổi REQ nào. Mục 4: `LOGIN` đã chuyển tầng nền tảng từ 19-09-2026 (danh mục còn ghi cấu trúc cũ). Mục 2: phạm vi `LOGIN` sửa `39/41` → `42/44` (sau khi thêm `REQ-LOGIN-42`→`44`); bỏ cảnh báo "REQ 🟡 chưa có TC" vì `TEST_CASES_LOGIN_SUMMARY.md` đã có. Mục 3.1: ghi chú bảng "Đã xử lý" chỉ là bản rút gọn, trỏ về tài liệu module |
 | 19-09-2026 | **Hai quyết định PO trả lời qua chat.** `AMB-LOGIN-20` (mở và đóng cùng ngày): ép HTTPS là **bắt buộc** → thêm `REQ-LOGIN-44` 🟢 — `LOGIN` 44 REQ, 40 trong phạm vi; `CRM_LOGIN_TC_039` chuyển truy vết từ `REQ-LOGIN-01` sang REQ mới. `AMB-CUST-14` ✅ trùng giả định, không đổi REQ. Active 198 → 199, Tổng 231 → 232. **Cả `LOGIN` lẫn `CUST` không còn ambiguity treo** |
 | 19-09-2026 | **`CUST` đồng bộ requirements với evidence** — đo lại DOM thật 5 điểm lệch mà bộ TC phát hiện: 4 REQ 🟡 (`15`, `17`, `22`, `70`), 2 REQ chỉ ghi chú hiển thị (`11`, `16`), thêm `REQ-CUST-84` 🟢 (khoá đổi tiền tệ khi đã có giao dịch). Active 201 → 198, Changed 21 → 25, Tổng 230 → 231 |

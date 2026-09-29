@@ -7,7 +7,7 @@
 [Chọn 1 trong 2 cách:]
 
 ## Cách 1: Delta TC List (từ /update-testcases-from-impact mode APPLY) — KHUYẾN NGHỊ
-- File: [VD: docs/testcases/project/impact/delta_tc_TICKET-123.md]
+- File: [VD: docs/testcases/project/impact/delta_tc_TICKET-123_20260817-0930.md]
   Hoặc chỉ ghi mã ticket: [VD: TICKET-123 — agent tự tìm file delta_tc_ của mọi module]
 > Chưa có file delta_tc_ → chạy /update-testcases-from-impact mode APPLY TRƯỚC (prompt_27).
 > Chỉ có Impact Report là CHƯA ĐỦ — TC còn mô tả hành vi cũ thì script sửa xong vẫn sai

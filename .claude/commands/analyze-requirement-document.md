@@ -43,7 +43,7 @@ Workflow này nhận **tài liệu nguồn** (ticket, spec, user story) và sinh
 | Tên khớp `REQUIREMENTS_<TÊN_MODULE>_SUMMARY.md`, hoặc có bảng `REQ ID`/`Dải mã đã dùng`/`Nhật ký thay đổi` | `/generate-requirements-from-website` | Cập nhật theo ticket → `/update-requirements-from-ticket` · Sinh TC → `/generate_testcases_*` |
 | Tên khớp `system_map.md`, hoặc nằm trong `_discovery/` (trừ `sources/`) | `/discover-system` | Recon chi tiết một module → `/generate-requirements-from-website` (web) · `/generate-requirements-from-mobile` (app) |
 | Tên khớp `api_map.md` | `/discover-system` nhánh API · `/generate-testcases-api` | Sinh REQ cho module API → **`/generate-requirements-from-api`** · Sinh TC API → `/generate-testcases-api` |
-| Tên khớp `analysis_<TICKET-ID>.md`, `impact_<TICKET-ID>.md`, `TEST_CASES_<TÊN_MODULE>_SUMMARY.md` | chính workflow này hoặc tầng test case | Hỏi user muốn làm gì với nó |
+| Tên khớp `analysis_<TICKET-ID>.md`, `impact_<TICKET-ID>_<YYYYMMDD-HHmm>.md`, `TEST_CASES_<TÊN_MODULE>_SUMMARY.md` | chính workflow này hoặc tầng test case | Hỏi user muốn làm gì với nó |
 
 **Tệp là đặc tả API, không phải tài liệu ticket** — cũng dừng và route, dù không phải sản phẩm của workflow khác:
 

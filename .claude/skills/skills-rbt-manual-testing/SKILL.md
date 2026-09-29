@@ -298,9 +298,9 @@ docs/testcases/
     ├── mobile/test_cases_<module>_mobile.md         ← TC chạy trên app — tag @Android / @iOS
     ├── api/test_cases_<module>_api.md               ← TC gọi API
     ├── <nền-tảng>/parts/part_NN_<nền-tảng>_<slug>.md ← khi file nền tảng vượt ngưỡng
-    ├── impact/impact_plan_<TICKET-ID>.md            ← Mode DELTA: kế hoạch sửa theo từng ticket (cấp module)
-    ├── impact/delta_tc_<TICKET-ID>.md               ← Mode DELTA: TC đã sửa xong theo nền tảng — input của /update-automation-from-impact
-    ├── impact/automation_plan_<TICKET-ID>.md        ← do /update-automation-from-impact ghi — script đã sửa theo ticket
+    ├── impact/impact_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md            ← Mode DELTA: kế hoạch sửa theo từng ticket (cấp module)
+    ├── impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md               ← Mode DELTA: TC đã sửa xong theo nền tảng — input của /update-automation-from-impact
+    ├── impact/automation_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md        ← do /update-automation-from-impact ghi — script đã sửa theo ticket
 ```
 
 **Tầng nền tảng — luật cứng:**
@@ -1338,7 +1338,7 @@ Vì vậy Mode DELTA đặt việc **bảo toàn TC ID** lên trên mọi mục 
 - [ ] **5.** **Bảng Đối soát loại kiểm thử (4 vòng)** cập nhật **đúng những nhánh ticket chạm tới**, giữ nguyên phần còn lại — KHÔNG rà lại cả module. Ticket đụng thành phần màn hình mà nhánh `V1 · UI cơ bản` không đổi gì = **dấu hiệu đã bỏ sót**
 - [ ] **6.** Số TC ở index (Bản đồ tài liệu) khớp tổng số TC của các file nền tảng / `parts/`, tách rõ số TC `@Deprecated`
 - [ ] **7.** `docs/testcases/README.md` (danh mục) đã cập nhật: số TC, REQ bao phủ, ngày cập nhật
-- [ ] **8.** Có **Nhật ký thay đổi** ở cuối file TC + **Delta TC List ghi ra file** `impact/delta_tc_<TICKET-ID>.md` (cùng hậu tố với Impact Report) — có cột **Nền tảng** và **Vòng · Nhánh**, có đủ dòng `⏸️ @NeedsVerify` của TC chưa sửa được, ghi đúng **mốc git** của từng file nền tảng trước khi sửa
+- [ ] **8.** Có **Nhật ký thay đổi** ở cuối file TC + **Delta TC List ghi ra file** `impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md` (cùng hậu tố với Impact Report) — có cột **Nền tảng** và **Vòng · Nhánh**, có đủ dòng `⏸️ @NeedsVerify` của TC chưa sửa được, ghi đúng **mốc git** của từng file nền tảng trước khi sửa
 
 ---
 
@@ -1398,7 +1398,7 @@ Vì vậy Mode DELTA đặt việc **bảo toàn TC ID** lên trên mọi mục 
 - ❌ DELTA tự viết TC cho REQ mới (🟢) — ngoài phạm vi, phải route sang QUICK / FULL RBT
 - ❌ DELTA bỏ qua tác động lan toả (TC dùng field ở bước phụ · TC lấy TC vừa Deprecated làm precondition)
 - ❌ DELTA xong mà không ghi **Nhật ký thay đổi** và không ghi **Delta TC List** — tầng automation mất input
-- ❌ **Delta TC List chỉ nằm trong chat** — tầng automation thường chạy ở phiên khác, đóng phiên là mất. Phải ghi file `impact/delta_tc_<TICKET-ID>.md`
+- ❌ **Delta TC List chỉ nằm trong chat** — tầng automation thường chạy ở phiên khác, đóng phiên là mất. Phải ghi file `impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md`
 - ❌ **Delta TC List thiếu cột Nền tảng** — dải TC ID chung toàn module nên nhìn mã không biết TC thuộc web, app hay API; automation không biết sửa ở project nào, chạy lại trên Android hay iOS
 - ❌ **Bỏ TC `@NeedsVerify` khỏi Delta TC List** — automation tưởng TC không bị ảnh hưởng. Ghi dòng `⏸️ chưa sửa` để automation biết mà không chạm
 - ❌ **Ghi Delta TC List ở Mode PLAN** — kế hoạch chưa duyệt có thể bị gạch bớt; automation chỉ được đọc thứ đã thật sự sửa
@@ -1472,13 +1472,15 @@ Vì vậy Mode DELTA đặt việc **bảo toàn TC ID** lên trên mọi mục 
 
 | Output | Mô tả |
 |--------|--------|
-| `impact/impact_plan_<TICKET-ID>.md` | Bảng ánh xạ REQ → TC (✅ chắc chắn / ⚠️ suy luận / ❓ chưa có TC) + kế hoạch sửa từng TC + tác động lan toả |
+| `impact/impact_plan_<TICKET-ID>_<YYYYMMDD-HHmm>.md` | Bảng ánh xạ REQ → TC (✅ chắc chắn / ⚠️ suy luận / ❓ chưa có TC) + kế hoạch sửa từng TC + tác động lan toả |
 | File nền tảng đã sửa (+ index cập nhật) | Sửa **tại chỗ**, tên file không đổi, TC ID giữ nguyên |
 | Mốc git trước khi sửa | Hash commit của từng file nền tảng — ghi ở Nhật ký và `delta_tc_` để đối chiếu |
 | **Bảng Đối soát loại kiểm thử (4 vòng)** | Cập nhật **chỉ nhánh ticket chạm tới** ở cuối index — phần còn lại giữ nguyên |
 | **Đối soát cột Automation** | Chấm lại cột `Automation` của TC đã sửa / thêm, cập nhật đúng các dòng đó trong mục đối soát của index |
 | Nhật ký thay đổi | Bảng ở cuối file TC: ngày · ticket · TC bị ảnh hưởng · **vòng · nhánh** · thay đổi · mốc git |
-| **`impact/delta_tc_<TICKET-ID>.md`** | Delta TC List — **chỉ ghi ở APPLY**, cột **Nền tảng** + **Vòng · Nhánh** + hành động `✏️` / `➕` / `🗑️` / `⏸️`, ghi mốc git từng nền tảng. Input **bắt buộc** của `/update-automation-from-impact`; chat chỉ hiện tóm tắt + đường dẫn. Mẫu đầy đủ ở command `/update-testcases-from-impact` Bước 6 |
+| **`impact/delta_tc_<TICKET-ID>_<YYYYMMDD-HHmm>.md`** | Delta TC List — **chỉ ghi ở APPLY**, cột **Nền tảng** + **Vòng · Nhánh** + hành động `✏️` / `➕` / `🗑️` / `⏸️`, ghi mốc git từng nền tảng. Input **bắt buộc** của `/update-automation-from-impact`; chat chỉ hiện tóm tắt + đường dẫn. Mẫu đầy đủ ở command `/update-testcases-from-impact` Bước 6 |
 | Danh sách ngoài phạm vi | REQ 🟢 chưa có TC + command tiếp theo |
+
+> 🕒 **Hậu tố datetime bắt buộc** cho mọi file trong `impact/`: `<loại>_<TICKET-ID>_<YYYYMMDD-HHmm>.md`, giờ lấy bằng `date +%Y%m%d-%H%M` lúc tạo chính file đó. Mỗi lần chạy DELTA sinh **file mới** (không ghi đè lần chạy trước); đọc đầu vào theo mã ticket thì lấy file datetime **lớn nhất**. Đầy đủ quy tắc: `.claude/commands/update-testcases-from-impact.md` — mục *Quy tắc hậu tố datetime*.
 
 Tất cả output phải bằng **Tiếng Việt**, format **Markdown**, và tuân thủ **Quy Tắc Xuất File & Theo Dõi Tiến Độ**: ghi thẳng vào file (`docs/testcases/` hoặc `docs/checklists/`), chat chỉ hiện tiến độ + Bảng Đối Soát Coverage + tóm tắt đường dẫn file.
